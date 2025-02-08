@@ -2,6 +2,7 @@ import {v4} from 'uuid';
 import {memoize, throttle} from 'lodash';
 import {serverTimestamp, Unsubscribe} from 'firebase/database';
 import {getAuth} from 'firebase/auth';
+import {toast} from 'react-toastify';
 
 import {CommsNode, CommsNodeOptions, SendToOptions} from './commsNode';
 import {firebaseApp} from './googleAPI';
@@ -107,20 +108,44 @@ export class FirebaseNode extends CommsNode {
         this.unsubscribe = [
             onChildAdded(usersRef, async (snapshot) => {
                 const otherPeerId = snapshot.key!;
-                const {heartbeatTimestamp} = snapshot.val();
-                // Use our own heartbeatTimestamp to determine if other connections are stale or not, rather than
-                // Date.now(), to avoid issues with clock skew between the Firebase server and our client.
-                const myHeartbeatTimestamp = (
-                    await get(ref(this.realTimeDB, `tabletop/${this.channelId}/users/${this.peerId}/heartbeatTimestamp`))
-                ).val()!;
-                if (otherPeerId !== this.peerId && heartbeatTimestamp >= myHeartbeatTimestamp - 2 * FirebaseNode.HEARTBEAT_INTERVAL_MS) {
-                    console.log('Established connection with', otherPeerId);
+                if (otherPeerId !== this.peerId) {
+                    console.log('Establishing connection with', otherPeerId);
                     await this.options.onEvents?.connect?.(this, otherPeerId);
+                    if (this.isGM) {
+                        const {heartbeatTimestamp} = snapshot.val();
+                        // Use our own heartbeatTimestamp to determine if other connections are stale or not, rather than
+                        // Date.now(), to avoid issues with clock skew between the Firebase server and our client.
+                        const myHeartbeatTimestamp = (
+                            await get(ref(this.realTimeDB, `tabletop/${this.channelId}/users/${this.peerId}/heartbeatTimestamp`))
+                        ).val()!;
+                        if (heartbeatTimestamp < myHeartbeatTimestamp - 2 * FirebaseNode.HEARTBEAT_INTERVAL_MS) {
+                            console.log('Removing stale connection for', otherPeerId)
+                            // Connection is stale, so delete it
+                            await remove(snapshot.ref);
+                        }
+                    }
                 }
             }),
             onChildRemoved(usersRef, async (snapshot) => {
                 const otherPeerId = snapshot.key!;
-                if (otherPeerId !== this.peerId) {
+                if (otherPeerId === this.peerId) {
+                    // We were apparently timed out, possibly while the tab was suspended in the background.
+                    console.log('Detected that our user node was deleted, reconnecting', this.peerId)
+                    toast('Reconnecting...');
+                    // Add our node again.
+                    await set(child(usersRef, this.peerId), {
+                        userId: this.userId,
+                        heartbeatTimestamp: serverTimestamp() as any // placeholder value to auto-populate the current timestamp
+                    });
+                    // Also re-send our details to other clients, as they will have cleared them.
+                    const allUsers = await get(usersRef);
+                    for (const otherPeerId in allUsers.val()) {
+                        if (otherPeerId !== this.peerId) {
+                            await this.options.onEvents?.connect?.(this, otherPeerId);
+                        }
+                    }
+                } else {
+                    console.log('Connection timed out, disconnecting from', otherPeerId)
                     await this.options.onEvents?.close?.(this, otherPeerId);
                 }
             }),
@@ -219,8 +244,11 @@ export class FirebaseNode extends CommsNode {
 
     async heartbeat() {
         await set(
-            ref(this.realTimeDB, `tabletop/${this.channelId}/users/${this.peerId}/heartbeatTimestamp`),
-            serverTimestamp() as any // placeholder value to auto-populate the current server timestamp
+            ref(this.realTimeDB, `tabletop/${this.channelId}/users/${this.peerId}`),
+            {
+                userId: this.userId,
+                heartbeatTimestamp: serverTimestamp() as any // placeholder value to auto-populate the current server timestamp
+            }
         );
         if (this.isGM) {
             // Time out peers whose heartbeat has stopped.
@@ -239,7 +267,8 @@ export class FirebaseNode extends CommsNode {
     }
 
     /**
-     * The network hub has saved the tabletop, so delete actions which are older than the last time the tabletop was saved.
+     * The network hub has saved the tabletop, so delete actions which are older than the last time the tabletop was
+     * saved.
      */
     async cleanUpActions(
         firebaseRef: TypedDatabaseReference<{[id: string]: {json: string; fromClientId: string}}, GToveFirebaseDB>,

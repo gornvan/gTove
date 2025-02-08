@@ -226,11 +226,16 @@ Firebase networking.
 * Zellspell had problems moving minis to a different folder: "Tracking Prevention blocked access to storage",
   might be something specific to pinimg.com.
 
+* Editing a tabletop in a live session will cause clients to have their dice pool caps set to zero.
+* Transparent maps intercept mouse clicks, making it hard to manipulate minis underneath.
+
+
 ### Features to implement
+
+* Toggle for the ruler (shift?) to operate as a straight unconstrained line, ignoring the tabletop's grid settings.
 
 * Perhaps make the map selection highlight rotate freely even if grid snap is on, so there's immediate visual feedback
   when someone rotates a map with grid snap on.
-* It's hard to read the length of the Ruler over long distances. Scale based on ruler distance?
 * Have a version of piece locking which allows GMs but not players to move them.  Either have three different lock
   states (locked, locked for players, unlocked), or have a GM override on the existing two-state piece locking.
 * Additional options for video textures: loop on/off, play/pause
