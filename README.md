@@ -226,7 +226,6 @@ Firebase networking.
 * Zellspell had problems moving minis to a different folder: "Tracking Prevention blocked access to storage",
   might be something specific to pinimg.com.
 
-* Editing a tabletop in a live session will cause clients to have their dice pool caps set to zero.
 * Transparent maps intercept mouse clicks, making it hard to manipulate minis underneath.
 
 

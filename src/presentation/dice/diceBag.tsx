@@ -54,7 +54,7 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
     const tabletop = useSelector(getTabletopFromStore);
     const adjustDicePool = useCallback((dieType: string, delta = 1) => {
         setDicePool((dicePool) => {
-            if (tabletop.dicePoolLimit !== undefined) {
+            if (tabletop.dicePoolLimit !== undefined && tabletop.dicePoolLimit !== null) {
                 const total = Object.keys(dicePool ?? {}).reduce<number>((total, dieType) => (
                     total + (dicePool?.[dieType]?.count ?? 0)
                 ), delta);
