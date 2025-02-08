@@ -231,8 +231,6 @@ Firebase networking.
 
 ### Features to implement
 
-* Toggle for the ruler (shift?) to operate as a straight unconstrained line, ignoring the tabletop's grid settings.
-
 * Perhaps make the map selection highlight rotate freely even if grid snap is on, so there's immediate visual feedback
   when someone rotates a map with grid snap on.
 * Have a version of piece locking which allows GMs but not players to move them.  Either have three different lock

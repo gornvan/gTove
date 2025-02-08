@@ -101,6 +101,7 @@ import {FileAPIContext} from '../util/fileUtils';
 import StayInsideContainer from '../container/stayInsideContainer';
 import {TextureLoaderContext} from '../util/driveTextureLoader';
 import * as constants from '../util/constants';
+import {MINI_HEIGHT} from '../util/constants';
 import InputField from './inputField';
 import {PromiseModalContext} from '../context/promiseModalContextBridge';
 import {MyPeerIdReducerType} from '../redux/myPeerIdReducer';
@@ -130,7 +131,6 @@ import ResizeDetector from 'react-resize-detector';
 import {DisableGlobalKeyboardHandlerContext} from '../context/disableGlobalKeyboardHandlerContextBridge';
 import CanvasContextBridge from '../context/CanvasContextBridge';
 import MetadataLoaderContainer from '../container/metadataLoaderContainer';
-import {MINI_HEIGHT} from '../util/constants';
 
 interface TabletopViewComponentCustomMenuOption {
     render: (id: string) => React.ReactElement;
@@ -2557,7 +2557,7 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
                                 miniId={peerId}
                                 positionObj={ruler.end}
                                 movementPath={[ruler.start]}
-                                distanceMode={mapProperties?.distanceMode ?? this.props.tabletop.distanceMode}
+                                distanceMode={this.props.snapToGrid ? mapProperties?.distanceMode ?? this.props.tabletop.distanceMode : DistanceMode.STRAIGHT}
                                 distanceRound={mapProperties?.distanceRound ?? this.props.tabletop.distanceRound}
                                 gridScale={mapProperties?.gridScale ?? this.props.tabletop.gridScale}
                                 gridUnit={mapProperties?.gridUnit ?? this.props.tabletop.gridUnit}
