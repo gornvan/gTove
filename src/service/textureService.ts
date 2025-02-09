@@ -13,6 +13,7 @@ export interface TexturePromiseResult {
 interface TextureRecord {
     count: number;
     texturePromise: Promise<TexturePromiseResult>;
+    result?: TexturePromiseResult;
 }
 
 class TextureService {
@@ -28,9 +29,17 @@ class TextureService {
             this.textures[id] = {
                 count: 1,
                 texturePromise: this.promiseChain.queuePromise(textureLoader.loadTexture(metadata))
+                    .then((result) => {
+                        this.textures[id].result = result;
+                        return result;
+                    })
             };
         }
         return this.textures[id].texturePromise;
+    }
+
+    getTextureSync(metadata: DriveMetadata) {
+        return this.textures[metadata.id]?.result;
     }
 
     async releaseTexture(metadataId: string): Promise<boolean> {

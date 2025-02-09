@@ -226,9 +226,6 @@ Firebase networking.
 * Zellspell had problems moving minis to a different folder: "Tracking Prevention blocked access to storage",
   might be something specific to pinimg.com.
 
-* Transparent maps intercept mouse clicks, making it hard to manipulate minis underneath.
-
-
 ### Features to implement
 
 * Perhaps make the map selection highlight rotate freely even if grid snap is on, so there's immediate visual feedback

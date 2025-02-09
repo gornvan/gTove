@@ -131,6 +131,7 @@ import ResizeDetector from 'react-resize-detector';
 import {DisableGlobalKeyboardHandlerContext} from '../context/disableGlobalKeyboardHandlerContextBridge';
 import CanvasContextBridge from '../context/CanvasContextBridge';
 import MetadataLoaderContainer from '../container/metadataLoaderContainer';
+import TextureService from '../service/textureService';
 
 interface TabletopViewComponentCustomMenuOption {
     render: (id: string) => React.ReactElement;
@@ -1165,26 +1166,54 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
         return null;
     }
 
+    private mapIntersectionToRayCastIntersect<T extends RayCastField, U extends Extract<RayCastIntersect, {type: T}>>(
+        intersection: THREE.Intersection, fieldsArray: T[], position: ObjectVector2
+    ) {
+        const ancestor = this.findAncestorWithUserDataFields(intersection, fieldsArray);
+        if (ancestor) {
+            const userData = ancestor.object.userData;
+            if (userData.mapId && !this.props.fogOfWarMode) {
+                const map = this.props.scenario.maps[userData.mapId];
+                if (map.transparent) {
+                    // A player raycast that hits Fog of War on a transparent map just passes through.
+                    if ((!this.props.userIsGM || this.props.playerView) && isFogOfWarAtPoint(map, intersection.point)) {
+                        return null;
+                    }
+                    // Likewise for a transparent pixel on the map's texture (if it has been loaded).
+                    const textureResult = TextureService.getTextureSync(map.metadata);
+                    if (textureResult && intersection.uv && textureResult.texture.image instanceof HTMLCanvasElement) {
+                        const context = textureResult.texture.image.getContext('2d');
+                        if (context) {
+                            const x = Math.round(textureResult.texture.image.width * intersection.uv.x);
+                            const y = Math.round(textureResult.texture.image.height * (1 - intersection.uv.y));
+                            const imageData = context.getImageData(x, y, 1, 1);
+                            if (imageData.data[3] === 0) {
+                                return null;
+                            }
+                        }
+                    }
+                }
+            }
+            return {
+                ...userData,
+                type: ancestor.field,
+                point: intersection.point,
+                position,
+                object: intersection.object
+            } as U
+        } else {
+            return null;
+        }
+    }
+
     private rayCastForFirstUserDataFields<T extends RayCastField, U extends Extract<RayCastIntersect, {type: T}>>(
         position: ObjectVector2, fields: T | T[]
     ): U | null {
         const intersects = this.rayCastFromScreen(position);
         const fieldsArray = Array.isArray(fields) ? fields : [fields];
-        return intersects.reduce<U | null>((selected, intersect) => {
-            if (!selected) {
-                const ancestor = this.findAncestorWithUserDataFields(intersect, fieldsArray);
-                if (ancestor) {
-                    return {
-                        ...ancestor.object.userData,
-                        type: ancestor.field,
-                        point: intersect.point,
-                        position: new THREE.Vector2(position.x, position.y),
-                        object: intersect.object
-                    } as U;
-                }
-            }
-            return selected;
-        }, null);
+        return intersects.reduce<U | null>((selected, intersection) => (
+            selected || this.mapIntersectionToRayCastIntersect(intersection, fieldsArray, position)
+        ), null);
     }
 
     private rayCastForAllUserDataFields<T extends RayCastField, U extends Extract<RayCastIntersect, {type: T}>>(
@@ -1194,20 +1223,9 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
         const fieldsArray = Array.isArray(fields) ? fields : [fields];
         let inResult = {};
         return intersects
-            .map((intersect) => {
-                const ancestor = this.findAncestorWithUserDataFields(intersect, fieldsArray);
-                if (ancestor) {
-                    return {
-                        ...ancestor.object.userData,
-                        type: ancestor.field,
-                        point: intersect.point,
-                        position,
-                        object: intersect.object
-                    } as U
-                } else {
-                    return null;
-                }
-            })
+            .map((intersection) => (
+                this.mapIntersectionToRayCastIntersect(intersection, fieldsArray, position)
+            ))
             .filter((intersect): intersect is U => (intersect !== null))
             .filter((intersect: RayCastIntersect) => {
                 let id = (intersect.type === 'dieRollId') ? intersect.dieId :
