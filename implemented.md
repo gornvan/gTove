@@ -559,3 +559,8 @@ much as possible.
 * Add an option to tabletop settings to set a default value for the label size for everyone on loading the tabletop.
 ## Version 675
 * Make defensive checks when maps are removed while leaving minis behind.
+## Version 680
+* Make clients auto-reconnect if they've been timed out (e.g. in an inactive tab or on a sleeping device).
+* Make the ruler always straight when grid snap is off.
+* When dragging minis or clicking on a map with enabled transparent pixels, pass through any transparent pixels or fog
+  of war to map(s) below.
