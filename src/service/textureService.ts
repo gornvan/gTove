@@ -45,9 +45,12 @@ class TextureService {
     async releaseTexture(metadataId: string): Promise<boolean> {
         if (this.textures[metadataId] && --this.textures[metadataId].count === 0) {
             const {texture} = await this.textures[metadataId].texturePromise;
-            texture.dispose();
-            delete(this.textures[metadataId]);
-            return true;
+            // The texture may have become used again in the meantime, so only release it if its count is still 0
+            if (this.textures[metadataId].count === 0) {
+                texture.dispose();
+                delete(this.textures[metadataId]);
+                return true;
+            }
         }
         return false;
     }
