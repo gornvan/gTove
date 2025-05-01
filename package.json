@@ -2,6 +2,11 @@
   "name": "gtove",
   "version": "0.1.0",
   "homepage": "https://illuminantgames.com/gtove",
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">=1.22.21 <2.0.0",
+    "node": ">=16.20.0 <17.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "node scripts/buildEnv.js && react-scripts build && node scripts/moveSourceMaps.js",
