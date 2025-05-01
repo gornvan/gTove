@@ -196,6 +196,8 @@ only list recently completed items which have not yet been released.
 
 * Fix bug: the name of a player whose client auto-reconnects after being slept in an inactive tab would appear as
   "Disconnected" in the dice roller.
+* Fix bug: players dragging elastic banded minis with "fog" visibility into fog of war would cause their client to
+  crash.
 
 ## Plans/TODO
 
@@ -215,7 +217,6 @@ Firebase networking.
 * Verify whitelist/allow connections still works.
 
 ### Bugs
-* Player dragging minis with elastic band that have "fog" visibility, and one goes into fog - null pointer exception.
 * CorsAnywhere has locked down their endpoint.
 * Mini editor after cropping PDF only used top half of the screen.
 * NetworkedAction should have peerKey, not individual action types.

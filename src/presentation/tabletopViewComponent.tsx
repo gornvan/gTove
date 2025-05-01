@@ -1358,9 +1358,12 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
             for (let otherMiniId of multipleMiniIds) {
                 if (otherMiniId !== miniId) {
                     const otherMini = this.props.scenario.minis[otherMiniId];
-                    const newPosition = buildVector3(otherMini.position).add(this.offset);
-                    const newOnMapId = getMapIdAtPoint(newPosition, this.props.scenario.maps, otherMini.visibility === PieceVisibilityEnum.HIDDEN);
-                    actions.push(updateMiniPositionAction(otherMiniId, newPosition, this.props.myPeerId, newOnMapId));
+                    if (otherMini) {
+                        // Players might drag the elastic-banded minis into fog, losing some of them from their scenario.
+                        const newPosition = buildVector3(otherMini.position).add(this.offset);
+                        const newOnMapId = getMapIdAtPoint(newPosition, this.props.scenario.maps, otherMini.visibility === PieceVisibilityEnum.HIDDEN);
+                        actions.push(updateMiniPositionAction(otherMiniId, newPosition, this.props.myPeerId, newOnMapId));
+                    }
                 }
             }
         }
@@ -1402,14 +1405,17 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
         let actions = [];
         for (let miniId of multipleMiniIds || [singleMiniId]) {
             const mini = this.props.scenario.minis[miniId];
-            const miniRotation = buildEuler(mini.rotation);
-            miniRotation.y += rotation.y;
-            actions.push(updateMiniRotationAction(miniId, miniRotation, this.props.myPeerId));
-            if (miniId !== singleMiniId) {
-                const position = buildVector3(mini.position).sub(centre).applyEuler(rotation).add(centre);
-                actions.push(updateMiniPositionAction(miniId, position, this.props.myPeerId,
-                    getMapIdAtPoint(position, this.props.scenario.maps, mini.visibility === PieceVisibilityEnum.HIDDEN)
-                ));
+            if (mini) {
+                // Players might rotate the elastic-banded minis into fog, losing some of them from their scenario.
+                const miniRotation = buildEuler(mini.rotation);
+                miniRotation.y += rotation.y;
+                actions.push(updateMiniRotationAction(miniId, miniRotation, this.props.myPeerId));
+                if (miniId !== singleMiniId) {
+                    const position = buildVector3(mini.position).sub(centre).applyEuler(rotation).add(centre);
+                    actions.push(updateMiniPositionAction(miniId, position, this.props.myPeerId,
+                        getMapIdAtPoint(position, this.props.scenario.maps, mini.visibility === PieceVisibilityEnum.HIDDEN)
+                    ));
+                }
             }
         }
         actions = undoGroupActionList(actions, undoGroupId);
@@ -1455,9 +1461,12 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
         let actions = [];
         for (let miniId of multipleMiniIds || [singleMiniId]) {
             const mini = this.props.scenario.minis[miniId];
-            const snapMini = this.snapMini(mini.attachMiniId);
-            const lowerLimit = (snapMini) ? -snapMini.elevation : 0;
-            actions.push(updateMiniElevationAction(miniId, Math.max(lowerLimit, mini.elevation + deltaY), this.props.myPeerId));
+            if (mini) {
+                // Players might drag the elastic-banded minis into fog, losing some of them from their scenario.
+                const snapMini = this.snapMini(mini.attachMiniId);
+                const lowerLimit = (snapMini) ? -snapMini.elevation : 0;
+                actions.push(updateMiniElevationAction(miniId, Math.max(lowerLimit, mini.elevation + deltaY), this.props.myPeerId));
+            }
         }
         actions = undoGroupActionList(actions, undoGroupId);
         for (let action of actions) {
@@ -1815,7 +1824,7 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
                 for (let miniId of multipleMiniIds) {
                     const actionLength = actions.length;
                     const mini = this.props.scenario.minis[miniId];
-                    if (mini.selectedBy !== this.props.myPeerId) {
+                    if (!mini || mini.selectedBy !== this.props.myPeerId) {
                         continue;
                     }
                     const snapMini = this.snapMini(miniId);
