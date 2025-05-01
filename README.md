@@ -194,6 +194,9 @@ equivalents, as described in the table below.
 The implemented list is very long, and has been moved into a [separate file](./implemented.md).  This section will now
 only list recently completed items which have not yet been released.
 
+* Fix bug: the name of a player whose client auto-reconnects after being slept in an inactive tab would appear as
+  "Disconnected" in the dice roller.
+
 ## Plans/TODO
 
 * Unify minis and templates into "pieces" - ability to add textures to template, and/or customise mini shapes.
@@ -212,6 +215,7 @@ Firebase networking.
 * Verify whitelist/allow connections still works.
 
 ### Bugs
+* Player dragging minis with elastic band that have "fog" visibility, and one goes into fog - null pointer exception.
 * CorsAnywhere has locked down their endpoint.
 * Mini editor after cropping PDF only used top half of the screen.
 * NetworkedAction should have peerKey, not individual action types.

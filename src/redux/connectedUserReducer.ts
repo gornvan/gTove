@@ -49,11 +49,10 @@ export function updateConnectedUserDeviceAction(peerId: string, deviceWidth: num
 export interface RemoveConnectedUserActionType extends Action {
     type: ConnectedUserActionTypes.REMOVE_CONNECTED_USER;
     peerId: string;
-    peerKey: string;
 }
 
 export function removeConnectedUserAction(peerId: string): RemoveConnectedUserActionType {
-    return {type: ConnectedUserActionTypes.REMOVE_CONNECTED_USER, peerId, peerKey: 'removeUser' + peerId};
+    return {type: ConnectedUserActionTypes.REMOVE_CONNECTED_USER, peerId};
 }
 
 interface RemoveAllConnectedUsersActionType extends Action {

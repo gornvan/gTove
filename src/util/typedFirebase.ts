@@ -2,12 +2,15 @@ import {
     Database,
     DatabaseReference,
     DataSnapshot,
+    TransactionOptions,
+    TransactionResult,
     child as firebaseChild,
     get as firebaseGet,
     getDatabase as firebaseGetDatabase,
     onChildAdded as firebaseOnChildAdded,
     onChildRemoved as firebaseOnChildRemoved,
     ref as firebaseRef,
+    runTransaction as firebaseRunTransaction,
     push as firebasePush,
     set as firebaseSet,
     remove as firebaseRemove
@@ -124,4 +127,12 @@ export function remove<T extends object, Base>(
     ref: TypedDatabaseReference<T, Base>
 ): Promise<void> {
     return firebaseRemove(ref);
+}
+
+export function runTransaction<T, Base>(
+    ref: TypedDatabaseReference<T, Base>,
+    update: (currentValue: T | null) => T | undefined,
+    options?: TransactionOptions
+): Promise<TransactionResult> {
+    return firebaseRunTransaction(ref, update, options);
 }

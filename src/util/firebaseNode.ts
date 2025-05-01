@@ -15,6 +15,7 @@ import {
     push,
     ref,
     remove,
+    runTransaction,
     set,
     TypedDatabase,
     TypedDatabaseReference
@@ -129,21 +130,24 @@ export class FirebaseNode extends CommsNode {
             onChildRemoved(usersRef, async (snapshot) => {
                 const otherPeerId = snapshot.key!;
                 if (otherPeerId === this.peerId) {
-                    // We were apparently timed out, possibly while the tab was suspended in the background.
-                    console.log('Detected that our user node was deleted, reconnecting', this.peerId)
-                    toast('Reconnecting...');
-                    // Add our node again.
-                    await set(child(usersRef, this.peerId), {
-                        userId: this.userId,
-                        heartbeatTimestamp: serverTimestamp() as any // placeholder value to auto-populate the current timestamp
-                    });
-                    // Also re-send our details to other clients, as they will have cleared them.
-                    const allUsers = await get(usersRef);
-                    for (const otherPeerId in allUsers.val()) {
-                        if (otherPeerId !== this.peerId) {
-                            await this.options.onEvents?.connect?.(this, otherPeerId);
+                    // We were apparently timed out, possibly while the tab was suspended in the background. Reconnect,
+                    // but do it in a timeout so our onChildRemoved callback concludes first.
+                    setTimeout(async () => {
+                        console.log('Detected that our user node was deleted, reconnecting', this.peerId)
+                        toast('Reconnecting...');
+                        // Add our node again.
+                        await set(child(usersRef, this.peerId), {
+                            userId: this.userId,
+                            heartbeatTimestamp: serverTimestamp() as any // placeholder value to auto-populate the current timestamp
+                        });
+                        // Also re-send our details to other clients, as they will have cleared them.
+                        const allUsers = await get(usersRef);
+                        for (const otherPeerId in allUsers.val()) {
+                            if (otherPeerId !== this.peerId) {
+                                await this.options.onEvents?.connect?.(this, otherPeerId);
+                            }
                         }
-                    }
+                    }, 1);
                 } else {
                     console.log('Connection timed out, disconnecting from', otherPeerId)
                     await this.options.onEvents?.close?.(this, otherPeerId);
@@ -243,26 +247,28 @@ export class FirebaseNode extends CommsNode {
     }
 
     async heartbeat() {
-        await set(
-            ref(this.realTimeDB, `tabletop/${this.channelId}/users/${this.peerId}`),
-            {
-                userId: this.userId,
-                heartbeatTimestamp: serverTimestamp() as any // placeholder value to auto-populate the current server timestamp
-            }
+        await runTransaction(
+            ref(this.realTimeDB, `tabletop/${this.channelId}/users/${this.peerId}/heartbeatTimestamp`),
+            (currentValue) => (
+                // Only set my heartbeat if it exists.
+                currentValue === null ? undefined : serverTimestamp() as any
+            )
         );
         if (this.isGM) {
             // Time out peers whose heartbeat has stopped.
             const allUsers = (
                 await get(ref(this.realTimeDB, `tabletop/${this.channelId}/users`))
-            ).val()!;
-            // Calculate the cutoff timestamp using the server-set timestamp we just set on our own heartbeat, to avoid
-            // issues with clock skew between clients and the server.
-            const cutoff = allUsers[this.peerId].heartbeatTimestamp - 2 * FirebaseNode.HEARTBEAT_INTERVAL_MS;
-            // Remove any peers whose heartbeat hasn't been updated in several intervals.
-            await Promise.all(Object.keys(allUsers)
-                .filter((peerId) => (allUsers[peerId].heartbeatTimestamp < cutoff))
-                .map((peerId) => (remove(ref(this.realTimeDB, `tabletop/${this.channelId}/users/${peerId}`))))
-            );
+            ).val();
+            if (allUsers?.[this.peerId]) {
+                // Calculate the cutoff timestamp using the server-set timestamp we just set on our own heartbeat, to
+                // avoid issues with clock skew between clients and the server.
+                const cutoff = allUsers[this.peerId].heartbeatTimestamp - 2 * FirebaseNode.HEARTBEAT_INTERVAL_MS;
+                // Remove any peers whose heartbeat hasn't been updated in several intervals.
+                await Promise.all(Object.keys(allUsers)
+                    .filter((peerId) => (allUsers[peerId].heartbeatTimestamp < cutoff))
+                    .map((peerId) => (remove(ref(this.realTimeDB, `tabletop/${this.channelId}/users/${peerId}`))))
+                );
+            }
         }
     }
 
