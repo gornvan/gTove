@@ -25,7 +25,14 @@ import {
     ScenarioType,
     snapMap
 } from '../util/scenarioUtils';
-import {getScenarioFromStore, getUndoableHistoryFromStore, ReduxStoreType} from './mainReducer';
+import {
+    getLoggedInUserFromStore,
+    getMyPeerIdFromStore,
+    getScenarioFromStore,
+    getTabletopFromStore,
+    getUndoableHistoryFromStore,
+    ReduxStoreType
+} from './mainReducer';
 import {buildEuler, buildVector3, eulerToObject, vector3ToObject} from '../util/threeUtils';
 import {
     castMapProperties,
@@ -331,13 +338,22 @@ function updateMiniAction(miniId: string, mini: Partial<MiniType> | ((state: Red
         // Set peerKey to blank (=> don't share over the network) if we're simply rehydrating the metadata.
         const peerKey = (Object.keys(mini).length === 1 && mini.metadata && mini.metadata.id === prevMini.metadata.id)
             ? '' : miniId + extra;
+        // Players can't dispatch gmOnly updates, but they can e.g. drag a "fog" visibility mini into fog, which sets
+        // gmOnly. So, we need to know if this was a player-initiated action, and set gmOnly false on this update even
+        // if it sets the mini's gmOnly flag.
+        const loggedInUser = getLoggedInUserFromStore(prevState);
+        const tabletop = getTabletopFromStore(prevState);
+        const isPlayer = loggedInUser?.emailAddress !== tabletop.gm;
+        // Also, if the mini was selected by this player and they're losing visibility of it, we should clear selectedBy.
+        const myPeerId = getMyPeerIdFromStore(prevState);
+        const isNoLongerSelectedBy = isPlayer && mini.gmOnly && selectedBy === myPeerId;
         // Dispatch the update!
         dispatch(populateScenarioAction({
             type: ScenarioReducerActionTypes.UPDATE_MINI_ACTION,
             miniId,
-            mini: {...mini, selectedBy},
+            mini: {...mini, selectedBy: isNoLongerSelectedBy ? null : selectedBy},
             peerKey,
-            gmOnly: (mini.gmOnly !== undefined ? mini.gmOnly : prevMini.gmOnly)
+            gmOnly: isPlayer ? false : (mini.gmOnly !== undefined ? mini.gmOnly : prevMini.gmOnly)
                 || (mini.piecesRosterGMValues !== undefined || mini.gmNoteMarkdown !== undefined)
         }));
     };

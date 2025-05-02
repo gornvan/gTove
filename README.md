@@ -198,6 +198,8 @@ only list recently completed items which have not yet been released.
   "Disconnected" in the dice roller.
 * Fix bug: players dragging elastic banded minis with "fog" visibility into fog of war would cause their client to
   crash.
+* Avoid inconsistencies in mini positions/rotations when players drag or rotate "fog" visibility minis into fog (the
+  mini would vanish from players, but the GM would still see the mini state just before it was moved into the fog.)
 
 ## Plans/TODO
 
