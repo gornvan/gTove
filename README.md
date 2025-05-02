@@ -194,13 +194,6 @@ equivalents, as described in the table below.
 The implemented list is very long, and has been moved into a [separate file](./implemented.md).  This section will now
 only list recently completed items which have not yet been released.
 
-* Fix bug: the name of a player whose client auto-reconnects after being slept in an inactive tab would appear as
-  "Disconnected" in the dice roller.
-* Fix bug: players dragging elastic banded minis with "fog" visibility into fog of war would cause their client to
-  crash.
-* Avoid inconsistencies in mini positions/rotations when players drag or rotate "fog" visibility minis into fog (the
-  mini would vanish from players, but the GM would still see the mini state just before it was moved into the fog.)
-
 ## Plans/TODO
 
 * Unify minis and templates into "pieces" - ability to add textures to template, and/or customise mini shapes.

@@ -564,3 +564,10 @@ much as possible.
 * Make the ruler always straight when grid snap is off.
 * When dragging minis or clicking on a map with enabled transparent pixels, pass through any transparent pixels or fog
   of war to map(s) below.
+## Version 686
+* Fix bug: the name of a player whose client auto-reconnects after being slept in an inactive tab would appear as
+  "Disconnected" in the dice roller.
+* Fix bug: players dragging elastic banded minis with "fog" visibility into fog of war would cause their client to
+  crash.
+* Avoid inconsistencies in mini positions/rotations when players drag or rotate "fog" visibility minis into fog (the
+  mini would vanish from players, but the GM would still see the mini state just before it was moved into the fog.)
