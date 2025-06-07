@@ -1,4 +1,4 @@
-import {FunctionComponent, useCallback} from 'react';
+import {FunctionComponent, useCallback, useMemo} from 'react';
 
 import {DiceBagReducerType} from '../../redux/diceBagReducer';
 import InputButton from '../inputButton';
@@ -9,7 +9,7 @@ interface DieButtonProps {
     busy: boolean;
     dicePoolMode: boolean;
     diceBag: DiceBagReducerType;
-    onSelectDie: (dieType: string, poolName?: string) => void;
+    onSelectDie: (dieType: string) => void;
 }
 
 export const DieButton: FunctionComponent<DieButtonProps> = ({
@@ -17,15 +17,21 @@ export const DieButton: FunctionComponent<DieButtonProps> = ({
                                                                  busy,
                                                                  dicePoolMode,
                                                                  diceBag,
-                                                                 onSelectDie
+                                                                 onSelectDie,
                                                              }) => {
     const {poolName} = diceBag.dieType[dieType];
     const onClick = useCallback(() => {
-        onSelectDie(dieType, poolName);
-    }, [onSelectDie, dieType, poolName]);
-    const disabled = dicePoolMode ?  (poolName !== undefined) : busy;
+        onSelectDie(dieType);
+    }, [onSelectDie, dieType]);
+    const toolTip = useMemo(() => (
+        !dicePoolMode ? `Roll${poolName ? '' : ' a'} ${dieType}`
+        : poolName ? `Include ${dieType} in the pool (only once)`
+            : `Add 1${dieType} to pool`
+    ), [dicePoolMode, dieType, poolName])
     return (poolName !== undefined && dieType !== poolName) ? null : (
-        <InputButton key={'dieButton-' + dieType} type='button' disabled={disabled} onChange={onClick}>
+        <InputButton key={'dieButton-' + dieType} type='button' disabled={busy} onChange={onClick}
+                     tooltip={toolTip}
+        >
             <DieImage dieType={dieType} diceBag={diceBag} />
         </InputButton>
     );

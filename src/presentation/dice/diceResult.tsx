@@ -1,49 +1,37 @@
 import {FunctionComponent, useCallback, useMemo} from 'react';
-import {useDispatch} from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 
 import './diceResult.scss';
 
-import {addDiceAction, AddDieType, DiceRollHistory} from '../../redux/diceReducer';
+import {DiceRollHistory} from '../../redux/diceReducer';
 import {compareAlphanumeric} from '../../util/stringUtils';
 import InputButton from '../inputButton';
-import {DriveUser} from '../../util/googleDriveUtils';
+import {DicePoolType} from './diceBag';
 
 interface DiceResultProps {
     history: DiceRollHistory;
     busy: boolean;
     sortDice: boolean;
-    myPeerId: string;
-    loggedInUser: DriveUser;
-    userDiceColours: {diceColour: string, textColour: string};
+    rollPool: (dicePool: DicePoolType) => void;
 }
 
-const DiceResult: FunctionComponent<DiceResultProps> = ({history, busy, sortDice, myPeerId, loggedInUser, userDiceColours}) => {
-    const dicePool = useMemo(() => (
+const DiceResult: FunctionComponent<DiceResultProps> = ({history, busy, sortDice, rollPool}) => {
+    const dicePool: DicePoolType = useMemo(() => (
         Object.fromEntries(
-            Object.keys(history.results).map((dieType) => ([dieType, history.results[dieType].length]))
+            Object.keys(history.results).map((dieType) => ([
+                dieType,
+                {count: history.results[dieType].length}
+            ]))
         )
     ), [history]);
     const dicePoolText = useMemo(() => (
         Object.keys(dicePool)
-            .map((dieType) => ((dicePool[dieType] === 1 || dieType === 'd%') ? dieType : `${dicePool[dieType]}${dieType}`))
+            .map((dieType) => ((dicePool[dieType].count === 1 || dieType === 'd%') ? dieType : `${dicePool[dieType].count}${dieType}`))
             .join('+')
     ), [dicePool]);
-    const dispatch = useDispatch();
     const reRollPool = useCallback(() => {
-        const poolToRoll: AddDieType[] = [];
-        for (let dieType in dicePool) {
-            for (let count = 0; count < dicePool[dieType]; ++count) {
-                poolToRoll.push({
-                    dieType,
-                    dieColour: userDiceColours.diceColour,
-                    textColour: userDiceColours.textColour
-                });
-            }
-        }
-        const name = loggedInUser.displayName;
-        dispatch(addDiceAction(poolToRoll, myPeerId, name));
-    }, [loggedInUser.displayName, dispatch, myPeerId, dicePool, userDiceColours.diceColour, userDiceColours.textColour]);
+        rollPool(dicePool);
+    }, [rollPool, dicePool]);
     return (
         <div className='diceResult'>
             <ReactMarkdown>{getDiceResultString(history, sortDice)}</ReactMarkdown>

@@ -3,23 +3,24 @@
   background-color: white;
   z-index: 1;
 
-  @media (min-width: 600px) {
+  .diceButtons {
     display: flex;
-    flex-direction: column;
-    height: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
 
-    .topPanel {
-      overflow: hidden;
-    }
+    .dicePoolToggleButton {
+      width: 70px;
+      height: 70px;
+      text-align: center;
 
-    .bottomPanel {
-      flex: 1;
-      overflow: auto;
+      &::after {
+        top: unset !important;
+        right: unset !important;
+      }
     }
   }
 
-  img {
-    display: inline-block;
+  .dieImage img {
     width: 5em;
   }
 
@@ -40,7 +41,7 @@
         vertical-align: middle;
       }
 
-      span {
+      .dieCount {
         font-size: 40px;
         vertical-align: middle;
       }

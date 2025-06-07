@@ -6,12 +6,8 @@ import {toast} from 'react-toastify';
 import './diceBag.scss';
 
 import InputButton from '../inputButton';
-import {
-    addDiceAction,
-    AddDieType,
-    clearDiceAction,
-    DiceReducerType,
-} from '../../redux/diceReducer';
+import {addDiceAction, AddDieType, clearDiceAction, DiceReducerType,} from '../../redux/diceReducer';
+import {setDicePoolModeAction} from '../../redux/diceBagReducer';
 import {
     getConnectedUsersFromStore,
     getDiceBagFromStore,
@@ -23,7 +19,7 @@ import {DieButton} from './dieButton';
 import DieImage from './dieImage';
 import DiceHistory from './diceHistory';
 
-type DicePoolType = undefined | {
+export type DicePoolType = {
     [dieType: string]: {
         count: number;
     }
@@ -44,7 +40,7 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
     const {users} = useSelector(getConnectedUsersFromStore);
     const diceBag = useSelector(getDiceBagFromStore);
     const [sortDice, setSortDice] = useState(false);
-    const [dicePool, setDicePool] = useState<DicePoolType>();
+    const [dicePool, setDicePool] = useState<DicePoolType | undefined>(diceBag.dicePoolMode ? {} : undefined);
     const [pinOpen, setPinOpen] = useState(false);
     const myRollId = useMemo(() => (
         Object.keys(dice.rolls).find((rollId) => (dice.rolls[rollId].peerId === myPeerId))
@@ -52,6 +48,10 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
     const busy = (myRollId !== undefined && dice.rolls[myRollId].busy > 0);
     const dispatch = useDispatch();
     const tabletop = useSelector(getTabletopFromStore);
+    const toggleDicePoolMode = useCallback(() => {
+        dispatch(setDicePoolModeAction(!diceBag.dicePoolMode));
+        setDicePool(diceBag.dicePoolMode ? undefined : {});
+    }, [diceBag.dicePoolMode, dispatch]);
     const adjustDicePool = useCallback((dieType: string, delta = 1) => {
         setDicePool((dicePool) => {
             if (tabletop.dicePoolLimit !== undefined && tabletop.dicePoolLimit !== null) {
@@ -64,58 +64,57 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                 }
             }
             const count = dicePool?.[dieType]?.count ?? 0;
+            const {poolName} = diceBag.dieType[dieType];
             return (count + delta <= 0) ? omit(dicePool, dieType) : {
                 ...dicePool,
                 [dieType]: {
-                    count: count + delta
+                    count: poolName ? 1 : count + delta
                 }
             };
         });
-    }, [tabletop.dicePoolLimit]);
+    }, [diceBag.dieType, tabletop.dicePoolLimit]);
     const windowPoppedOut = useContext(MovableWindowContextObject);
     const closeIfAppropriate = useCallback(() => {
         if (!windowPoppedOut && !pinOpen) {
             onClose();
         }
     }, [onClose, pinOpen, windowPoppedOut]);
-    const onSelectDie = useCallback((dieType: string, poolName?: string) => {
+    const rollDice = useCallback((dicePool: DicePoolType) => {
+        const {diceColour: dieColour, textColour} = userDiceColours;
+        const poolToRoll: AddDieType[] = [];
+        for (let dieType of Object.keys(dicePool)) {
+            const pool = dicePool[dieType];
+            const {poolName} = diceBag.dieType[dieType];
+            if (poolName) {
+                poolToRoll.push({dieType, dieColour, textColour});
+                for (let otherName of diceBag.dieTypeNames) {
+                    if (otherName !== dieType && diceBag.dieType[otherName].poolName === poolName) {
+                        poolToRoll.push({dieType: otherName, dieColour, textColour});
+                    }
+                }
+            } else {
+                for (let count = 0; count < pool.count; ++count) {
+                    poolToRoll.push({dieType, dieColour, textColour});
+                }
+            }
+        }
+        const name = users[myPeerId]?.user.displayName;
+        dispatch(addDiceAction(poolToRoll, myPeerId, name));
+        setDicePool(diceBag.dicePoolMode ? {} : undefined);
+        closeIfAppropriate();
+    }, [userDiceColours, users, myPeerId, dispatch, closeIfAppropriate, diceBag]);
+    const onSelectDie = useCallback((dieType: string) => {
         if (dicePool) {
             adjustDicePool(dieType);
         } else {
-            const {diceColour: dieColour, textColour} = userDiceColours;
-            const name = users[myPeerId]?.user.displayName;
-            const dice: AddDieType[] = [{dieType, dieColour, textColour}];
-            if (poolName) {
-                for (let otherName of diceBag.dieTypeNames) {
-                    if (otherName !== dieType && diceBag.dieType[otherName].poolName === poolName) {
-                        dice.push({dieType: otherName, dieColour, textColour});
-                    }
-                }
-            }
-            dispatch(addDiceAction(dice, myPeerId, name));
-            closeIfAppropriate();
+            rollDice({[dieType]: {count: 1}})
         }
-    }, [adjustDicePool, closeIfAppropriate, users, diceBag, dicePool, dispatch, myPeerId, userDiceColours]);
-    const rollPool = useCallback(() => {
+    }, [adjustDicePool, dicePool, rollDice]);
+    const onRollDicePool = useCallback(() => {
         if (dicePool) {
-            const {diceColour, textColour} = userDiceColours;
-            const poolToRoll: AddDieType[] = [];
-            for (let dieType of Object.keys(dicePool)) {
-                const pool = dicePool[dieType];
-                for (let count = 0; count < pool.count; ++count) {
-                    poolToRoll.push({
-                        dieType,
-                        dieColour: diceColour,
-                        textColour
-                    });
-                }
-            }
-            const name = users[myPeerId]?.user.displayName;
-            dispatch(addDiceAction(poolToRoll, myPeerId, name));
-            setDicePool(() => (windowPoppedOut || pinOpen ? {} : undefined));
-            closeIfAppropriate();
+            rollDice(dicePool);
         }
-    }, [closeIfAppropriate, users, dicePool, dispatch, myPeerId, pinOpen, userDiceColours, windowPoppedOut]);
+    }, [dicePool, rollDice]);
     return (
         <div className='diceBag'>
             <div className='topPanel'>
@@ -128,14 +127,6 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                                      setPinOpen((pinOpen) => (!pinOpen));
                                  }}>
                         Keep dice bag open
-                    </InputButton>
-                    <InputButton type='checkbox'
-                                 selected={dicePool !== undefined}
-                                 tooltip='Toggles whether to roll a single die, or build a pool of dice.'
-                                 onChange={() => {
-                                     setDicePool((dicePool) => (dicePool ? undefined : {}));
-                                 }}>
-                        Build dice pool
                     </InputButton>
                     <InputButton type='checkbox'
                                  selected={sortDice}
@@ -154,7 +145,7 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                         Clear Dice on Tabletop
                     </InputButton>
                 </div>
-                <div>
+                <div className='diceButtons'>
                     {
                         diceBag.dieTypeNames.map((dieName) => (
                             <DieButton key={dieName}
@@ -166,6 +157,14 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                             />
                         ))
                     }
+                    <InputButton className='dicePoolToggleButton'
+                                 type='checkbox'
+                                 toggle={true}
+                                 selected={dicePool !== undefined}
+                                 tooltip='Toggles whether to roll a single die, or build a pool of dice.'
+                                 onChange={toggleDicePoolMode}>
+                        {dicePool ? 'Cancel' : 'Build'} Dice&nbsp;Pool
+                    </InputButton>
                 </div>
                 {
                     !dicePool ? null : (
@@ -178,9 +177,9 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                                         <DieImage dieType={dieType} diceBag={diceBag}/>
                                         {
                                             dicePool[dieType].count === 1 ? null : (
-                                                <span>
-                                                &times; {dicePool[dieType].count}
-                                            </span>
+                                                <span className='dieCount'>
+                                                    &times; {dicePool[dieType].count}
+                                                </span>
                                             )
                                         }
                                     </div>
@@ -193,12 +192,9 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                             }
                             <div className='dicePoolButtonRow'>
                                 <InputButton type='button' disabled={busy || Object.keys(dicePool).length === 0}
-                                             onChange={rollPool}
+                                             onChange={onRollDicePool}
                                 >
                                     Roll!
-                                </InputButton>
-                                <InputButton type='button' onChange={() => {setDicePool({})}}>
-                                    Clear dice pool.
                                 </InputButton>
                             </div>
                         </div>
@@ -207,9 +203,7 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                 <hr/>
             </div>
             <div className='bottomPanel'>
-                <DiceHistory dice={dice} sortDice={sortDice} busy={busy} myPeerId={myPeerId}
-                             loggedInUser={users[myPeerId]!.user} userDiceColours={userDiceColours}
-                />
+                <DiceHistory dice={dice} sortDice={sortDice} busy={busy} rollPool={rollDice} />
             </div>
         </div>
     );

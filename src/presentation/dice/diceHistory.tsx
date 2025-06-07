@@ -6,18 +6,16 @@ import './diceHistory.scss';
 import InputButton from '../inputButton';
 import {clearDiceHistoryAction, DiceReducerType} from '../../redux/diceReducer';
 import DiceResult from './diceResult';
-import {DriveUser} from '../../util/googleDriveUtils';
+import {DicePoolType} from './diceBag';
 
 interface DiceResultProps {
     dice: DiceReducerType;
     sortDice: boolean;
     busy: boolean;
-    myPeerId: string;
-    loggedInUser: DriveUser;
-    userDiceColours: {diceColour: string, textColour: string};
+    rollPool: (dicePool: DicePoolType) => void;
 }
 
-const DiceHistory: FunctionComponent<DiceResultProps> = ({dice, sortDice, busy, myPeerId, loggedInUser, userDiceColours}) => {
+const DiceHistory: FunctionComponent<DiceResultProps> = ({dice, sortDice, busy, rollPool}) => {
     const dispatch = useDispatch();
     const onClearHistory = useCallback(() => {
         dispatch(clearDiceHistoryAction());
@@ -28,7 +26,7 @@ const DiceHistory: FunctionComponent<DiceResultProps> = ({dice, sortDice, busy, 
             {
                 dice.historyIds.map((rollId) => (
                     <DiceResult key={'history-' + rollId} history={dice.history[rollId]} sortDice={sortDice} busy={busy}
-                                myPeerId={myPeerId} loggedInUser={loggedInUser} userDiceColours={userDiceColours}
+                                rollPool={rollPool}
                     />
                 ))
             }

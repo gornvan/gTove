@@ -19,6 +19,7 @@ export interface DieDefinitionType {
 export interface DiceBagReducerType {
     dieType: {[dieName: string]: DieDefinitionType};
     dieTypeNames: string[];
+    dicePoolMode: boolean;
 }
 
 const diceBagInitialState: DiceBagReducerType = {
@@ -67,7 +68,8 @@ const diceBagInitialState: DiceBagReducerType = {
             faceToValue: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
         }
     },
-    dieTypeNames: ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd%', 'd10.0']
+    dieTypeNames: ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd%', 'd10.0'],
+    dicePoolMode: false
 };
 
 const diceBagSlice = createSlice({
@@ -106,10 +108,21 @@ const diceBagSlice = createSlice({
             reducer: (state, action: PayloadAction<{names: string[]}>) => {
                 state.dieTypeNames = action.payload.names;
             }
+        },
+        setDicePoolModeAction: {
+            prepare: (open: boolean) => ({payload: open}),
+            reducer: (state, action: PayloadAction<boolean>) => {
+                state.dicePoolMode = action.payload;
+            }
         }
     }
 });
 
-export const {setDieTypeAction, removeDieTypeAction, setDieTypeNamesAction} = diceBagSlice.actions;
+export const {
+    setDieTypeAction,
+    removeDieTypeAction,
+    setDieTypeNamesAction,
+    setDicePoolModeAction
+} = diceBagSlice.actions;
 
 export default diceBagSlice.reducer;
