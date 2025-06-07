@@ -1,35 +1,67 @@
-import {FunctionComponent} from 'react';
-import ReactMarkdown from 'react-markdown';
+import {FunctionComponent, useCallback, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
+import ReactMarkdown from 'react-markdown';
 
-import InputButton from '../inputButton';
-import {clearDiceHistoryAction, DiceReducerType, DiceRollHistory} from '../../redux/diceReducer';
+import './diceResult.scss';
+
+import {addDiceAction, AddDieType, DiceRollHistory} from '../../redux/diceReducer';
 import {compareAlphanumeric} from '../../util/stringUtils';
+import InputButton from '../inputButton';
+import {DriveUser} from '../../util/googleDriveUtils';
 
 interface DiceResultProps {
-    dice: DiceReducerType;
+    history: DiceRollHistory;
+    busy: boolean;
     sortDice: boolean;
+    myPeerId: string;
+    loggedInUser: DriveUser;
+    userDiceColours: {diceColour: string, textColour: string};
 }
 
-const DiceResult: FunctionComponent<DiceResultProps> = ({dice, sortDice}) => {
+const DiceResult: FunctionComponent<DiceResultProps> = ({history, busy, sortDice, myPeerId, loggedInUser, userDiceColours}) => {
+    const dicePool = useMemo(() => (
+        Object.fromEntries(
+            Object.keys(history.results).map((dieType) => ([dieType, history.results[dieType].length]))
+        )
+    ), [history]);
+    const dicePoolText = useMemo(() => (
+        Object.keys(dicePool)
+            .map((dieType) => ((dicePool[dieType] === 1 || dieType === 'd%') ? dieType : `${dicePool[dieType]}${dieType}`))
+            .join('+')
+    ), [dicePool]);
     const dispatch = useDispatch();
-    return dice.historyIds.length === 0 ? null : (
-        <div className='diceHistory'>
-            <InputButton type='button' onChange={() => {
-                dispatch(clearDiceHistoryAction());
-            }}>Clear Roll History</InputButton>
+    const reRollPool = useCallback(() => {
+        const poolToRoll: AddDieType[] = [];
+        for (let dieType in dicePool) {
+            for (let count = 0; count < dicePool[dieType]; ++count) {
+                poolToRoll.push({
+                    dieType,
+                    dieColour: userDiceColours.diceColour,
+                    textColour: userDiceColours.textColour
+                });
+            }
+        }
+        const name = loggedInUser.displayName;
+        dispatch(addDiceAction(poolToRoll, myPeerId, name));
+    }, [loggedInUser.displayName, dispatch, myPeerId, dicePool, userDiceColours.diceColour, userDiceColours.textColour]);
+    return (
+        <div className='diceResult'>
+            <ReactMarkdown>{getDiceResultString(history, sortDice)}</ReactMarkdown>
             {
-                dice.historyIds.map((rollId) => (
-                    <ReactMarkdown className='dieResults' key={'history-' + rollId}>
-                        {getDiceResultString(dice.history[rollId], sortDice)}
-                    </ReactMarkdown>
-                ))
+                dicePool === undefined ? null : (
+                    <InputButton type='button' className='rerollButton' onChange={reRollPool}
+                                 disabled={busy} tooltip={`Roll ${dicePoolText} again`}
+                    >
+                        {dicePoolText}
+                    </InputButton>
+                )
             }
         </div>
-    )
-};
+    );
+}
 
 export default DiceResult;
+
 
 function getDiceResultString(history: DiceRollHistory, sort = true): string {
     const {timestamp, results, total, reroll, name} = history;
@@ -42,7 +74,7 @@ function getDiceResultString(history: DiceRollHistory, sort = true): string {
             ))
             : results[type];
         return (
-            `**${heading}:** ${list.map((dieResult) => (dieResult?.value ?? '...')).join(',')}`
+            `**${heading}:** ${list.map((dieResult) => (dieResult?.value ?? '...')).join(', ')}`
         );
     });
     const rolled = reroll ? 're-rolled' : 'rolled';
@@ -50,6 +82,6 @@ function getDiceResultString(history: DiceRollHistory, sort = true): string {
     const rollDate = new Date(timestamp ?? 0);
     const timePrefix = (!timestamp) ? 'Unknown time'
         : (rollDate.toDateString() === todayDateString) ? rollDate.toLocaleTimeString()
-        : rollDate.toLocaleString();
+            : rollDate.toLocaleString();
     return `[${timePrefix}]: ${name} ${rolled} ${resultStrings.join('; ')}${(total === undefined) ? '' : ` = **${total}**`}`;
 }

@@ -26,16 +26,17 @@
   .dicePool {
     min-height: 6em;
 
-    p {
+    .selectDiceText {
       font-size: 20px;
-      margin-top: 20px;
+      padding: 14px 0;
       text-align: center;
     }
 
-    div {
+    .diceInPool {
       display: inline-block;
 
-      img {
+      .dieImage {
+        display: inline-block;
         vertical-align: middle;
       }
 
@@ -45,18 +46,21 @@
       }
     }
 
-    label {
-      display: block;
+    .dicePoolButtonRow {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      gap: 10px;
 
-      span {
-        width: 90%;
-        margin: 0 5%;
+      .button {
+        flex: 1;
+        text-align: center;
+
+        span {
+          width: 90%;
+        }
       }
     }
   }
 
-  .dieResults {
-    margin: 0 5px;
-    padding: 0;
-  }
 }

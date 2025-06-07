@@ -21,7 +21,7 @@ import {
 import {MovableWindowContextObject} from '../movableWindow';
 import {DieButton} from './dieButton';
 import DieImage from './dieImage';
-import DiceResult from './diceResult';
+import DiceHistory from './diceHistory';
 
 type DicePoolType = undefined | {
     [dieType: string]: {
@@ -172,7 +172,7 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                         <div className='dicePool'>
                             {
                                 Object.keys(dicePool).map((dieType) => (
-                                    <div key={dieType} onClick={() => {
+                                    <div key={dieType} className='diceInPool' onClick={() => {
                                         adjustDicePool(dieType, -1)
                                     }}>
                                         <DieImage dieType={dieType} diceBag={diceBag}/>
@@ -187,21 +187,29 @@ const DiceBag: FunctionComponent<DiceBagProps> = ({
                                 ))
                             }
                             {
-                                Object.keys(dicePool).length > 0 ? (
-                                    <InputButton type='button' disabled={busy} onChange={rollPool}>
-                                        Roll!
-                                    </InputButton>
-                                ) : (
-                                    <p>Select dice to roll in a pool together.</p>
+                                Object.keys(dicePool).length > 0 ? null : (
+                                    <p className='selectDiceText'>Select dice to roll in a pool together.</p>
                                 )
                             }
+                            <div className='dicePoolButtonRow'>
+                                <InputButton type='button' disabled={busy || Object.keys(dicePool).length === 0}
+                                             onChange={rollPool}
+                                >
+                                    Roll!
+                                </InputButton>
+                                <InputButton type='button' onChange={() => {setDicePool({})}}>
+                                    Clear dice pool.
+                                </InputButton>
+                            </div>
                         </div>
                     )
                 }
                 <hr/>
             </div>
             <div className='bottomPanel'>
-                <DiceResult dice={dice} sortDice={sortDice} />
+                <DiceHistory dice={dice} sortDice={sortDice} busy={busy} myPeerId={myPeerId}
+                             loggedInUser={users[myPeerId]!.user} userDiceColours={userDiceColours}
+                />
             </div>
         </div>
     );
