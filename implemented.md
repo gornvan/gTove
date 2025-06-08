@@ -571,3 +571,7 @@ much as possible.
   crash.
 * Avoid inconsistencies in mini positions/rotations when players drag or rotate "fog" visibility minis into fog (the
   mini would vanish from players, but the GM would still see the mini state just before it was moved into the fog.)
+## Version 689
+* Add buttons to the dice bag roll history that allow users to roll a previous pool of dice again with a single click.
+* Make the "Build Dice Pool" button larger, in-line with the dice icon buttons.
+* Remember whether a user was in Dice Pool mode or not when the dice bag is closed and then re-opened.

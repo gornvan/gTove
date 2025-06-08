@@ -194,10 +194,6 @@ equivalents, as described in the table below.
 The implemented list is very long, and has been moved into a [separate file](./implemented.md).  This section will now
 only list recently completed items which have not yet been released.
 
-* Add buttons to the dice bag roll history allowing users to roll a previous pool of dice again with a single click.
-* Make the "Build Dice Pool" button larger, in-line with the dice icon buttons.
-* Remember whether a user was in Dice Pool mode or not when the dice bag is closed and then re-opened.
-
 ## Plans/TODO
 
 * Unify minis and templates into "pieces" - ability to add textures to template, and/or customise mini shapes.
