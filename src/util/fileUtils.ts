@@ -54,6 +54,10 @@ export enum IconShapeEnum {
     close = 'close'
 }
 
+export enum PieceVisibilityEnum {
+    HIDDEN = 1, FOGGED = 2, REVEALED = 3
+}
+
 export interface TemplateProperties extends TabletopObjectProperties, FromBundleProperties {
     templateShape: TemplateShape;
     colour: number;
@@ -118,9 +122,6 @@ export interface MapProperties extends TabletopObjectProperties, FromBundlePrope
     distanceRound?: DistanceRound;
 }
 
-export enum PieceVisibilityEnum {
-    HIDDEN = 1, FOGGED = 2, REVEALED = 3
-}
 
 export interface MiniProperties extends TabletopObjectProperties, FromBundleProperties, WebLinkProperties {
     width: number;

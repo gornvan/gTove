@@ -32,7 +32,7 @@ export type UploadType = {
 
 function getAncestorMetadata(metadata: FileMetadata, store: Store<ReduxStoreType>, rootId: string, result: FileMetadata[] = []): FileMetadata[] {
     const uploadPlaceholders = getUploadPlaceholdersFromStore(store.getState());
-    const {fileMetadata: fileMetadata} = getAllFilesFromStore(store.getState());
+    const {fileMetadata} = getAllFilesFromStore(store.getState());
     for (let parentId of metadata.parents) {
         if (parentId !== rootId) {
             const parentMetadata = uploadPlaceholders.entities[parentId]?.metadata || fileMetadata[parentId];
