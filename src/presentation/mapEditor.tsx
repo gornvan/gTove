@@ -7,14 +7,6 @@ import {omit} from 'lodash';
 
 import RenameFileEditor from './renameFileEditor';
 import GridEditorComponent from './gridEditorComponent';
-import {
-    AnyAppProperties,
-    castMapProperties,
-    defaultMapProperties,
-    DriveMetadata,
-    GridType,
-    MapProperties
-} from '../util/googleDriveUtils';
 import DriveTextureLoader from '../util/driveTextureLoader';
 import InputButton from './inputButton';
 import {PromiseModalContextObject} from '../context/promiseModalContextBridge';
@@ -25,11 +17,18 @@ import {
     distanceModeStrings,
     DistanceRound,
     distanceRoundStrings,
-    getColourHex
+    getColourHex,
+    GRID_COLOUR
 } from '../util/scenarioUtils';
 import {updateTabletopAction} from '../redux/tabletopReducer';
 import {GRID_NONE} from '../util/constants';
-import {isSupportedVideoMimeType} from '../util/fileUtils';
+import {GridType,
+    isSupportedVideoMimeType,
+    MapProperties,
+    defaultMapProperties,
+    castMapProperties,
+    FileMetadata
+} from '../util/fileUtils';
 import InputField from './inputField';
 import EnumSelect from './enumSelect';
 
@@ -37,7 +36,7 @@ enum GridStateEnum {
     GRID_STATE_ALIGNING, GRID_STATE_SCALING, GRID_STATE_COMPLETE
 }
 
-const GRID_TYPE_LABELS = {
+const GRID_TYPE_LABELS: Record<GridType, string> = {
     [GridType.NONE]: 'No Grid',
     [GridType.SQUARE]: 'Square Grid',
     [GridType.HEX_VERT]: 'Hexagonal (Vertical)',
@@ -45,7 +44,9 @@ const GRID_TYPE_LABELS = {
 };
 
 const gridTypeOptions = Object.keys(GridType)
-    .map((type) => ({label: GRID_TYPE_LABELS[GridType[type]], value: GridType[type]}));
+    .map((type) => ({
+        label: GRID_TYPE_LABELS[GridType[type as keyof typeof GridType]],
+        value: GridType[type as keyof typeof GridType]}));
 
 const DEFAULT_COLOUR_SWATCHES = [
     '#000000', '#9b9b9b', '#ffffff', '#8b572a',
@@ -55,7 +56,7 @@ const DEFAULT_COLOUR_SWATCHES = [
 ];
 
 interface MapEditorProps {
-    metadata: DriveMetadata<AnyAppProperties, MapProperties>;
+    metadata: FileMetadata<void, MapProperties>;
     onClose: () => void;
     textureLoader: DriveTextureLoader;
 }
@@ -75,7 +76,7 @@ const MapEditor: FunctionComponent<MapEditorProps> = ({metadata, onClose, textur
             const blob = await textureLoader.loadImageBlob(metadata);
             setTextureUrl(window.URL.createObjectURL(blob));
         } catch (error) {
-            setLoadError(error.message);
+            setLoadError((error as Error).message);
         }
     }, [metadata, textureLoader]);
     useEffect(() => {
@@ -114,7 +115,7 @@ const MapEditor: FunctionComponent<MapEditorProps> = ({metadata, onClose, textur
                     options={gridTypeOptions}
                     value={gridTypeOptions.find((option) => (option.value === properties.gridType))}
                     onChange={(newValue) => {
-                        const gridType: GridType = GridType[newValue.value];
+                        const gridType: GridType = GridType[newValue.value as keyof typeof GridType];
                         setProperties((properties) => ({
                             ...properties,
                             gridType,
@@ -135,7 +136,7 @@ const MapEditor: FunctionComponent<MapEditorProps> = ({metadata, onClose, textur
                                         <p>Set grid colour</p>
                                         <ColourPicker
                                             disableAlpha={true}
-                                            initialColour={getColourHex(properties.gridColour)}
+                                            initialColour={getColourHex(properties.gridColour as GRID_COLOUR)}
                                             onColourChange={(colourObj) => {
                                                 gridColour = colourObj.hex;
                                             }}

@@ -1,7 +1,7 @@
 import {FunctionComponent, useMemo} from 'react';
 import * as THREE from 'three';
 
-import {DriveMetadata, MiniProperties} from '../util/googleDriveUtils';
+import {FileMetadata, MiniProperties} from '../util/fileUtils';
 import {
     ObjectEuler,
     ObjectVector3,
@@ -20,7 +20,7 @@ interface TabletopMiniTopDownComponentProps {
     miniId: string;
     label: string;
     labelSize: number;
-    metadata: DriveMetadata<void, MiniProperties>;
+    metadata: FileMetadata<void, MiniProperties>;
     positionObj: ObjectVector3;
     rotationObj: ObjectEuler;
     scaleFactor: number;

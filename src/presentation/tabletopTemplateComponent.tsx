@@ -4,12 +4,12 @@ import memoizeOne from 'memoize-one';
 
 import {
     castTemplateProperties,
-    DriveMetadata,
+    FileMetadata,
     GridType,
     IconShapeEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/googleDriveUtils';
+} from '../util/fileUtils';
 import {
     DistanceMode,
     DistanceRound,
@@ -32,7 +32,7 @@ interface TabletopTemplateComponentProps {
     miniId: string;
     label: string;
     labelSize: number;
-    metadata: DriveMetadata<void, TemplateProperties>;
+    metadata: FileMetadata<void, TemplateProperties>;
     positionObj: ObjectVector3;
     rotationObj: ObjectEuler;
     scaleFactor: number;

@@ -11,12 +11,12 @@ import RenameFileEditor from './renameFileEditor';
 import {
     castTemplateProperties,
     defaultMiniProperties,
-    DriveMetadata,
+    FileMetadata,
     IconShapeEnum,
     PieceVisibilityEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/googleDriveUtils';
+} from '../util/fileUtils';
 import TabletopPreviewComponent from './tabletopPreviewComponent';
 import {getColourHexString, MiniType, ScenarioType, TabletopType} from '../util/scenarioUtils';
 import InputField from './inputField';
@@ -37,7 +37,7 @@ interface TemplateEditorStoreProps extends GtoveDispatchProp {
 }
 
 interface TemplateEditorOwnProps {
-    metadata: DriveMetadata<void, TemplateProperties>;
+    metadata: FileMetadata<void, TemplateProperties>;
     onClose: () => void;
     fileAPI: FileAPI;
 }
@@ -109,7 +109,7 @@ class TemplateEditor extends React.Component<TemplateEditorProps, TemplateEditor
     }
 
     getStateFromProps(props: TemplateEditorProps): TemplateEditorState {
-        const properties = TemplateEditor.calculateAppProperties(castTemplateProperties(this.props.metadata.properties), this.state ? this.state.properties : {});
+        const properties = TemplateEditor.calculateAppProperties(castTemplateProperties(this.props.metadata.properties!), this.state ? this.state.properties : {});
         return {
             showColourPicker: false,
             adjustPosition: false,
@@ -205,7 +205,7 @@ class TemplateEditor extends React.Component<TemplateEditorProps, TemplateEditor
         }));
     }
 
-    getSaveMetadata(): Partial<DriveMetadata<void, TemplateProperties>> {
+    getSaveMetadata(): Partial<FileMetadata<void, TemplateProperties>> {
         if (this.state.templateColourSwatches) {
             this.props.dispatch(updateTabletopAction({templateColourSwatches: this.state.templateColourSwatches}));
         }
@@ -238,10 +238,12 @@ class TemplateEditor extends React.Component<TemplateEditorProps, TemplateEditor
     }
 
     renderSelect<E>(enumObject: E, labels: {[key in keyof E]: string}, field: string, defaultValue: keyof E) {
-        const options = Object.keys(enumObject)
-            .map((key) => ({label: labels[key], value: enumObject[key]}))
+        const options = Object.keys(enumObject as any)
+            .map((key) => ({label: labels[key as keyof E], value: enumObject[key as keyof E]}))
             .sort((o1, o2) => (compareAlphanumeric(o1.label, o2.label)));
-        const value = options.find((option) => (option.value === (this.state.properties[field] || defaultValue)));
+        const currentValue = this.state.properties[field as keyof TemplateProperties] as E[keyof E];
+        const value = options.find(
+            (option) => (option.value === (currentValue || enumObject[defaultValue])));
         return (
             <ReactDropdown
                 className='select'
