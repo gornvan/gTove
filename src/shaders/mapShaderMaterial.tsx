@@ -97,7 +97,7 @@ const fragmentShaderHexVert = (`
     }
 `);
 
-const shaderCode = {
+const shaderCode: Partial<Record<GridType, string>> = {
     [GridType.HEX_HORZ]: fragmentShaderHead + fragmentShaderHexHorz + fragmentShaderFoot,
     [GridType.HEX_VERT]: fragmentShaderHead + fragmentShaderHexVert + fragmentShaderFoot
 }

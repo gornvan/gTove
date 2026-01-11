@@ -241,7 +241,7 @@ class TemplateEditor extends React.Component<TemplateEditorProps, TemplateEditor
         const options = Object.keys(enumObject as any)
             .map((key) => ({label: labels[key as keyof E], value: enumObject[key as keyof E]}))
             .sort((o1, o2) => (compareAlphanumeric(o1.label, o2.label)));
-        const currentValue = this.state.properties[field as keyof TemplateProperties] as E[keyof E];
+        const currentValue = this.state.properties[field as keyof TemplateProperties] as unknown as E[keyof E];
         const value = options.find(
             (option) => (option.value === (currentValue || enumObject[defaultValue])));
         return (

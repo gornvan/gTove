@@ -10,7 +10,7 @@ import {
 } from '../util/scenarioUtils';
 import UprightMiniShaderMaterial from '../shaders/uprightMiniShaderMaterial';
 import HighlightShaderMaterial from '../shaders/highlightShaderMaterial';
-import {FileMetadata, MiniProperties} from '../util/fileUtils';
+import {FileMetadata, MiniProperties, defaultMiniProperties} from '../util/fileUtils';
 import {
     MINI_THICKNESS,
     RENDER_ORDER_ADJUST,
@@ -98,7 +98,7 @@ const TabletopMiniStandeeComponent: FunctionComponent<TabletopStandeeMiniCompone
                 />
                 <mesh position={standeePosition} rotation={proneRotation} renderOrder={position.y + offset.y + RENDER_ORDER_ADJUST}>
                     <TabletopMiniExtrusion/>
-                    <UprightMiniShaderMaterial texture={texture} opacity={opacity} colour={colour} properties={metadata.properties}/>
+                    <UprightMiniShaderMaterial texture={texture} opacity={opacity} colour={colour} properties={metadata.properties || defaultMiniProperties}/>
                 </mesh>
                 {
                     (!highlight) ? null : (

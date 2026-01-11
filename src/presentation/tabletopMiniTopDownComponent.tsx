@@ -93,7 +93,7 @@ const TabletopMiniTopDownComponent: FunctionComponent<TabletopMiniTopDownCompone
                     >
                         <cylinderGeometry attach='geometry' args={[0.5, 0.5, MINI_THICKNESS, 32]}/>
                         <TopDownMiniShaderMaterial texture={texture} opacity={opacity} colour={colour}
-                                                   properties={metadata.properties}/>
+                                                   properties={metadata.properties as MiniProperties}/>
                     </mesh>
                     {
                         (!highlight) ? null : (

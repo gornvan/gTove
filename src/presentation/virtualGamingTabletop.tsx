@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {debounce, isEqual, isObject} from 'lodash';
+import {debounce, isEqual} from 'lodash';
 import {toast, ToastContainer} from 'react-toastify';
 import * as THREE from 'three';
 import {randomBytes} from 'crypto';

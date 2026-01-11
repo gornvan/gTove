@@ -12,7 +12,20 @@ import {ConnectedUserUsersType} from '../redux/connectedUserReducer';
 import {buildEuler, buildVector3, isColourDark, reverseEuler} from './threeUtils';
 import {isCloseTo} from './mathsUtils';
 import {PaintToolEnum} from '../presentation/paintTools';
-import { AnyProperties, castMapProperties, castMiniProperties, castTemplateProperties, defaultMapProperties, defaultMiniProperties, FileMetadata, GridType, isTemplateMetadata, isTemplateProperties, MapProperties, MiniProperties, PieceVisibilityEnum, ScenarioObjectProperties, TemplateProperties } from './fileUtils';
+import { AnyProperties,
+    castMapProperties,
+    castMiniProperties,
+    castTemplateProperties,
+    defaultMapProperties,
+    defaultMiniProperties,
+    FileMetadata,
+    GridType,
+    isTemplateMetadata,
+    isTemplateProperties,
+    MapProperties,
+    MiniProperties,
+    PieceVisibilityEnum,
+    TemplateProperties } from './fileUtils';
 
 export interface WithMetadataType<T extends AnyProperties> {
     metadata: FileMetadata<void, T>;

@@ -14,7 +14,7 @@ export interface BundleType {
 }
 
 export async function buildBundleJson(fileAPI: FileAPI, name: string, scenarioMetadataIds: string[], mapMetadataIds: string[], miniMetadataIds: string[]): Promise<BundleType> {
-    let bundle = {
+    let bundle: BundleType = {
         bundleType: BundleTypeEnum.DRIVE,
         name,
         scenarios: {},
