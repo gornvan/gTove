@@ -1,13 +1,13 @@
-import {DriveMetadata} from '../util/googleDriveUtils';
+import {FileMetadata} from '../util/fileUtils';
 import {FileAPI} from '../util/fileUtils';
 import {PromiseChain} from '../util/promiseChain';
 
 class MetadataLoaderService {
 
-    private loading: {[id: string]: Promise<DriveMetadata>} = {};
-    private promiseChain= new PromiseChain<DriveMetadata>();
+    private loading: {[id: string]: Promise<FileMetadata>} = {};
+    private promiseChain= new PromiseChain<FileMetadata>();
 
-    loadMetadata(metadataId: string, fileAPI: FileAPI): Promise<DriveMetadata> {
+    loadMetadata(metadataId: string, fileAPI: FileAPI): Promise<FileMetadata> {
         if (!this.loading[metadataId]) {
             this.loading[metadataId] = this.promiseChain.queuePromise(fileAPI.getFullMetadata(metadataId));
         }
