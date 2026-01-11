@@ -44,7 +44,7 @@ class ScenarioFileEditor extends React.Component<ScenarioFileEditorProps, Scenar
 
     async componentDidMount() {
         const json = await this.context.fileAPI.getJsonFileContents(this.props.metadata);
-        const [fileScenario] = jsonToScenarioAndTabletop(json as any, this.props.files.driveMetadata);
+        const [fileScenario] = jsonToScenarioAndTabletop(json as any, this.props.files.fileMetadata);
         this.setState({fileScenario});
     }
 
