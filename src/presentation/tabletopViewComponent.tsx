@@ -89,14 +89,15 @@ import {SetCameraFunction} from './virtualGamingTabletop';
 import {
     castMapProperties,
     castTemplateProperties,
-    DriveMetadata,
+    FileMetadata,
+    FileSystemUser,
     GridType,
     isMiniMetadata,
     isTemplateMetadata,
     PieceVisibilityEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/googleDriveUtils';
+} from '../util/fileUtils';
 import {FileAPIContext} from '../util/fileUtils';
 import StayInsideContainer from '../container/stayInsideContainer';
 import {TextureLoaderContext} from '../util/driveTextureLoader';
@@ -188,7 +189,7 @@ export interface TabletopViewComponentCameraView {
 }
 
 interface TabletopViewComponentProps extends GtoveDispatchProp {
-    fullDriveMetadata: {[key: string]: DriveMetadata};
+    fullDriveMetadata: {[key: string]: FileMetadata};
     scenario: ScenarioType;
     tabletop: TabletopType;
     setCamera: SetCameraFunction;
@@ -632,7 +633,7 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
     private userOwnsMini(miniId: string): boolean {
         const driveFileOwners = this.props.scenario.minis[miniId] && this.props.scenario.minis[miniId].metadata.owners;
         return this.props.userIsGM ? !this.props.playerView :
-            (driveFileOwners !== undefined && driveFileOwners.reduce<boolean>((mine, owner) => (mine || owner.me), false));
+            (driveFileOwners !== undefined && driveFileOwners.reduce<boolean>((acc: boolean, owner: FileSystemUser) => (!!acc || !!owner.me), false));
     }
 
     private selectMiniOptions: TabletopViewComponentMenuOption[] = [
@@ -1221,7 +1222,7 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
     ): U[] {
         const intersects = this.rayCastFromScreen(position);
         const fieldsArray = Array.isArray(fields) ? fields : [fields];
-        let inResult = {};
+        let inResult: any = {};
         return intersects
             .map((intersection) => (
                 this.mapIntersectionToRayCastIntersect(intersection, fieldsArray, position)
@@ -1549,13 +1550,13 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
             const selected = this.rayCastForFirstUserDataFields(startPos, 'mapId');
             if (selected && selected.mapId) {
                 const map = this.props.scenario.maps[selected.mapId];
-                if (map.metadata.properties.gridType === GridType.NONE) {
+                if (map.metadata.properties!.gridType === GridType.NONE) {
                     this.showToastMessage('Map has no grid - Fog of War for it is disabled.');
                 } else {
                     this.offset.copy(selected.point);
                     this.offset.y += TabletopViewComponent.FOG_RECT_HEIGHT_ADJUST;
                     fogOfWarRect = {mapId: selected.mapId, startPos: this.offset.clone(), endPos: this.offset.clone(),
-                        colour: map.metadata.properties.gridColour || 'black',
+                        colour: map.metadata.properties!.gridColour || 'black',
                         position: new THREE.Vector2(position.x, position.y), showButtons: false};
                 }
             }
@@ -1885,8 +1886,9 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
         }
         const {positionObj: miniPosition, scaleFactor: miniScale, elevation} = snapMini;
         const {positionObj: templatePosition, elevation: templateElevation, rotationObj: templateRotation, scaleFactor: templateScale} = snapTemplate;
-        const template: MiniType<TemplateProperties> = this.props.scenario.minis[templateId] as MiniType<TemplateProperties>;
-        const templateProperties: TemplateProperties = castTemplateProperties(template.metadata.properties);
+        const template: MiniType = this.props.scenario.minis[templateId] as MiniType;
+        const templateProperties: TemplateProperties =
+            castTemplateProperties(template.metadata.properties as TemplateProperties);
         const dy = templatePosition.y - miniPosition.y + templateElevation;
         const miniRadius = miniScale / 2;
         const templateWidth = templateProperties.width * templateScale;
@@ -1986,7 +1988,7 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
             }
         } else if (this.props.fogOfWarMode) {
             const selected = this.rayCastForFirstUserDataFields(position, 'mapId');
-            if (selected && selected.mapId && this.props.scenario.maps[selected.mapId].metadata.properties.gridType !== GridType.NONE) {
+            if (selected && selected.mapId && this.props.scenario.maps[selected.mapId].metadata.properties!.gridType !== GridType.NONE) {
                 this.changeFogOfWarBitmask(null, {mapId: selected.mapId, startPos: selected.point,
                     endPos: selected.point, position: new THREE.Vector2(position.x, position.y), colour: '', showButtons: false});
             }
@@ -2345,11 +2347,11 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
                 // Adjust templates drawing at the same Y level upwards to try to minimise Z-fighting.
                 let elevationOffset = 0;
                 if (isTemplateMetadata(metadata)) {
-                    const y = positionObj.y + elevation + Number(metadata.properties.offsetY);
-                    while (templateY[y + elevationOffset]) {
+                    const y = positionObj.y + elevation + Number(metadata.properties!.offsetY);
+                    while ((templateY as any)[y + elevationOffset]) {
                         elevationOffset += 0.001;
                     }
-                    templateY[y + elevationOffset] = true;
+                    (templateY as any)[y + elevationOffset] = true;
                 }
                 if (attachMiniId) {
                     const attachedSnapMini = this.snapMini(attachMiniId);
@@ -2491,7 +2493,7 @@ class TabletopViewComponent extends React.Component<TabletopViewComponentProps, 
             const position = buildVector3(map.position);
             return (
                 <group position={position} rotation={rotation}>
-                    <FogOfWarRectComponent gridType={map.metadata.properties.gridType}
+                    <FogOfWarRectComponent gridType={map.metadata.properties!.gridType}
                                            cornerPos1={startPos} cornerPos2={endPos} colour={fogOfWarRect.colour}
                     />
                 </group>

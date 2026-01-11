@@ -3,7 +3,7 @@ import {toast} from 'react-toastify';
 
 import BrowseFilesComponent from './browseFilesComponent';
 import {FOLDER_BUNDLE} from '../util/constants';
-import {DriveMetadata} from '../util/googleDriveUtils';
+import {FileMetadata} from '../util/fileUtils';
 import BundleFileEditor from '../presentation/bundleFileEditor';
 import {FileAPIContextObject} from '../context/fileAPIContextBridge';
 import {copyURLToClipboard} from '../util/scenarioUtils';
@@ -28,7 +28,7 @@ const ScreenBundleBrowser: FunctionComponent<ScreenBundleBrowserProps> = ({onFin
     const fileActions = useMemo(() => ([
         {
             label: 'Copy URL',
-            onClick: (metadata: DriveMetadata) => {
+            onClick: (metadata: FileMetadata) => {
                 onFinish(() => {
                     copyURLToClipboard(metadata.id);
                     toast('Bundle URL copied to clipboard.');

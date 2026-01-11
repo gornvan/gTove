@@ -10,7 +10,7 @@ import {
 } from '../util/scenarioUtils';
 import UprightMiniShaderMaterial from '../shaders/uprightMiniShaderMaterial';
 import HighlightShaderMaterial from '../shaders/highlightShaderMaterial';
-import {DriveMetadata, MiniProperties} from '../util/googleDriveUtils';
+import {FileMetadata, MiniProperties} from '../util/fileUtils';
 import {
     MINI_THICKNESS,
     RENDER_ORDER_ADJUST,
@@ -26,7 +26,7 @@ interface TabletopStandeeMiniComponentProps {
     miniId: string;
     label: string;
     labelSize: number;
-    metadata: DriveMetadata<void, MiniProperties>;
+    metadata: FileMetadata<void, MiniProperties>;
     positionObj: ObjectVector3;
     rotationObj: ObjectEuler;
     scaleFactor: number;
