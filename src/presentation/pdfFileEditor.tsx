@@ -24,7 +24,7 @@ import {ObjectVector2} from '../util/scenarioUtils';
 import {FileIndexReducerType} from '../redux/fileIndexReducer';
 import MiniEditor from './miniEditor';
 import MapEditor from './mapEditor';
-import DriveTextureLoader from '../util/driveTextureLoader';
+import DriveTextureLoader from '../util/storage/providers/google/driveTextureLoader';
 import {OptionalContentConfig} from 'pdfjs-dist/types/display/optional_content_config';
 import BrowseFilesComponent from '../container/browseFilesComponent';
 import * as constants from '../util/constants';

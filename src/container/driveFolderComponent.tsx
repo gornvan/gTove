@@ -10,9 +10,9 @@ import {
     GtoveDispatchProp,
     ReduxStoreType
 } from '../redux/mainReducer';
-import googleAPI from '../util/googleAPI';
+import googleAPI from '../util/storage/providers/google/googleAPI';
 import * as constants from '../util/constants';
-import DriveTextureLoader from '../util/driveTextureLoader';
+import DriveTextureLoader from '../util/storage/providers/google/driveTextureLoader';
 import {
     FileMetadata,
     RootDirAppProperties,

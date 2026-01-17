@@ -7,7 +7,7 @@ import ReactDropdown from 'react-dropdown-now';
 import './miniEditor.scss';
 
 import RenameFileEditor from './renameFileEditor';
-import DriveTextureLoader from '../util/driveTextureLoader';
+import DriveTextureLoader from '../util/storage/providers/google/driveTextureLoader';
 import {
     FileMetadata,
     MiniProperties,

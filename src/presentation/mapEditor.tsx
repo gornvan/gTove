@@ -7,7 +7,7 @@ import {omit} from 'lodash';
 
 import RenameFileEditor from './renameFileEditor';
 import GridEditorComponent from './gridEditorComponent';
-import DriveTextureLoader from '../util/driveTextureLoader';
+import DriveTextureLoader from '../util/storage/providers/google/driveTextureLoader';
 import InputButton from './inputButton';
 import {PromiseModalContextObject} from '../context/promiseModalContextBridge';
 import ColourPicker from './colourPicker';

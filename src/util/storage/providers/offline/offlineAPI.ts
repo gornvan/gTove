@@ -1,11 +1,11 @@
 import {v4} from 'uuid';
 import {without} from 'lodash';
 
-import * as constants from './constants';
-import {DriveFileOwner } from './googleDriveUtils';
-import { FileSystemUser, FileMetadata, WebLinkProperties } from './storage/model';
-import { FileAPI } from './storage/contract';
-import { corsUrl } from './storage/utils';
+import * as constants from '../../../constants';
+import {DriveFileOwner } from '../google/googleDriveUtils';
+import { FileSystemUser, FileMetadata, WebLinkProperties } from '../../model';
+import { FileAPI } from '../../contract';
+import { corsUrl } from '../../utils';
 
 // Used instead of googleAPI when offline.
 

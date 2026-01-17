@@ -5,7 +5,7 @@ import {getAuth} from 'firebase/auth';
 import {toast} from 'react-toastify';
 
 import {CommsNode, CommsNodeOptions, SendToOptions} from './commsNode';
-import {firebaseApp} from './googleAPI';
+import {firebaseApp} from './storage/providers/google/googleAPI';
 import {
     child,
     get,

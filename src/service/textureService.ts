@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import DriveTextureLoader from '../util/driveTextureLoader';
+import DriveTextureLoader from '../util/storage/providers/google/driveTextureLoader';
 import {FileMetadata} from '../util/storage/model';
 import {PromiseChain} from '../util/promiseChain';
 

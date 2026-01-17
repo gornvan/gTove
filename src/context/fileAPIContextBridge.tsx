@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {FileAPI} from '../util/storage/contract';
 import { FileAPIContext } from '../util/storage/contract';
-import DriveTextureLoader, {TextureLoaderContext} from '../util/driveTextureLoader';
+import DriveTextureLoader, {TextureLoaderContext} from '../util/storage/providers/google/driveTextureLoader';
 
 interface FileAPIContextBridgeProps {
     fileAPI: FileAPI;

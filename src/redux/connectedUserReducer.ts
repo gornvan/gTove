@@ -1,6 +1,6 @@
 import {Action, AnyAction, combineReducers, Reducer} from 'redux';
 
-import {DriveUser} from '../util/googleDriveUtils';
+import {DriveUser} from '../util/storage/providers/google/googleDriveUtils';
 import {DeviceLayoutReducerType} from './deviceLayoutReducer';
 import {AppVersion} from '../util/appVersion';
 import {NetworkedAction} from '../util/types';
