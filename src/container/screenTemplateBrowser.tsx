@@ -4,13 +4,13 @@ import {toast} from 'react-toastify';
 
 import BrowseFilesComponent from './browseFilesComponent';
 import {
-    castTemplateProperties,
     FileMetadata,
     IconShapeEnum,
     PieceVisibilityEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/fileUtils';
+} from '../util/storage/model';
+import { castTemplateProperties } from '../util/storage/utils';
 import {FOLDER_TEMPLATE} from '../util/constants';
 import {
     getColourHexString,

@@ -3,13 +3,12 @@ import * as THREE from 'three';
 import memoizeOne from 'memoize-one';
 
 import {
-    castTemplateProperties,
     FileMetadata,
     GridType,
     IconShapeEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/fileUtils';
+} from '../util/storage/model';
 import {
     DistanceMode,
     DistanceRound,
@@ -27,6 +26,7 @@ import HighlightShaderMaterial from '../shaders/highlightShaderMaterial';
 import RosterColumnValuesLabel from './rosterColumnValuesLabel';
 import TabletopPathComponent, {TabletopPathPoint} from './tabletopPathComponent';
 import LabelSprite from './labelSprite';
+import { castTemplateProperties } from '../util/storage/utils';
 
 interface TabletopTemplateComponentProps {
     miniId: string;

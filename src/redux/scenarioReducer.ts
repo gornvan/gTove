@@ -35,14 +35,13 @@ import {
 } from './mainReducer';
 import {buildEuler, buildVector3, eulerToObject, vector3ToObject} from '../util/threeUtils';
 import {
-    castMapProperties,
-    castMiniProperties,
     FileMetadata,
     MapProperties,
     MiniProperties,
     PieceVisibilityEnum,
     TemplateProperties
-} from '../util/fileUtils';
+} from '../util/storage/model';
+import { castMapProperties, castMiniProperties } from '../util/storage/utils';
 import {ConnectedUserActionTypes} from './connectedUserReducer';
 import {GToveThunk, isScenarioAction, ScenarioAction} from '../util/types';
 import {TabletopReducerActionTypes} from './tabletopReducer';

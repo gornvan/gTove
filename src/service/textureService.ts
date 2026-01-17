@@ -1,7 +1,7 @@
 import THREE from 'three';
 
 import DriveTextureLoader from '../util/driveTextureLoader';
-import {FileMetadata} from '../util/fileUtils';
+import {FileMetadata} from '../util/storage/model';
 import {PromiseChain} from '../util/promiseChain';
 
 export interface TexturePromiseResult {

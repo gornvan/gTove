@@ -39,7 +39,7 @@ import MenuControlPanel from './menuControlPanel';
 import AvatarsComponent from './avatarsComponent';
 import FileErrorModalComponent from './fileErrorModalComponent';
 import {useStateWithCallback} from '../util/reactUtils';
-import {FileMetadata, MiniProperties} from '../util/fileUtils';
+import {FileMetadata, MiniProperties} from '../util/storage/model';
 import {DragDropPasteUploadContainer} from '../container/dragDropPasteUploadContainer';
 import {FOLDER_MINI} from '../util/constants';
 

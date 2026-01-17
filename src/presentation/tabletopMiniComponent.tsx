@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import {getTextureCornerColour} from '../util/threeUtils';
 import TabletopMiniTopDownComponent from './tabletopMiniTopDownComponent';
 import TabletopMiniStandeeComponent from './tabletopMiniStandeeComponent';
-import {FileMetadata, GridType, MiniProperties} from '../util/fileUtils';
+import {FileMetadata, GridType, MiniProperties} from '../util/storage/model';
 import {
     calculateMiniProperties,
     DistanceMode,

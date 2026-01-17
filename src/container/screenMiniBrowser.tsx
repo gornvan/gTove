@@ -1,6 +1,6 @@
 import {FunctionComponent, useMemo} from 'react';
 
-import {FileMetadata, MiniProperties} from '../util/fileUtils';
+import {FileMetadata, MiniProperties} from '../util/storage/model';
 import {FOLDER_MINI} from '../util/constants';
 import BrowseFilesComponent, {BrowseFilesComponentFileAction} from './browseFilesComponent';
 import {replaceMetadataAction} from '../redux/scenarioReducer';

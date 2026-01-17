@@ -15,8 +15,8 @@ import {
     ScenarioType,
     TabletopType
 } from '../util/scenarioUtils';
-import { AnyProperties, FileMetadata, GridType, TabletopFileAppProperties } from '../util/fileUtils';
-import {getAllFilesFromStore, getTabletopIdFromStore} from '../redux/mainReducer';
+import { AnyProperties, FileMetadata, GridType, TabletopFileAppProperties } from '../util/storage/model';
+import { getAllFilesFromStore, getTabletopIdFromStore } from '../redux/mainReducer';
 import {updateTabletopAction} from '../redux/tabletopReducer';
 import InputField from './inputField';
 import InputButton from './inputButton';

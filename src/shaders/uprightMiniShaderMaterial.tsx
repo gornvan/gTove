@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as THREE from 'three';
 import {useFrame} from '@react-three/fiber';
 
-import {MiniProperties} from '../util/fileUtils';
+import {MiniProperties} from '../util/storage/model';
 import {isVideoTexture} from '../util/threeUtils';
 
 const vertexShader: string = (`

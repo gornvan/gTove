@@ -6,19 +6,19 @@ import {AnyAction} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {connect} from 'react-redux';
 
-import {FileAPI} from '../util/fileUtils';
+import {FileAPI} from '../util/storage/contract';
 import RenameFileEditor from './renameFileEditor';
 import {
-    castTemplateProperties,
     defaultMiniProperties,
     FileMetadata,
     IconShapeEnum,
     PieceVisibilityEnum,
     TemplateProperties,
-    TemplateShape
-} from '../util/fileUtils';
+    TemplateShape } from '../util/storage/model';
+import { castTemplateProperties } from '../util/storage/utils';
+import { getColourHexString } from '../util/scenarioUtils';
 import TabletopPreviewComponent from './tabletopPreviewComponent';
-import {getColourHexString, MiniType, ScenarioType, TabletopType} from '../util/scenarioUtils';
+import { MiniType, ScenarioType, TabletopType } from '../util/scenarioUtils';
 import InputField from './inputField';
 import OnClickOutsideWrapper from '../container/onClickOutsideWrapper';
 import InputButton from './inputButton';

@@ -3,7 +3,7 @@ import {PropsWithChildren, useCallback, useContext, useEffect, useState} from 'r
 import {useDispatch, useStore} from 'react-redux';
 import {omit} from 'lodash';
 
-import {FileMetadata, MapProperties, MiniProperties} from '../util/fileUtils';
+import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/model';
 import {TextureLoaderContextObject} from '../context/fileAPIContextBridge';
 import TextureService from '../service/textureService';
 import {isVideoTexture} from '../util/threeUtils';

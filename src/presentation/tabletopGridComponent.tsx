@@ -1,7 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
 
-import {GridType} from '../util/fileUtils';
+import {GridType} from '../util/storage/model';
 import {getGridStride} from '../util/scenarioUtils';
 
 interface TabletopGridComponentProps {

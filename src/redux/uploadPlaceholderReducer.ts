@@ -1,6 +1,6 @@
 import {createEntityAdapter, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {FileMetadata} from '../util/fileUtils';
+import {FileMetadata} from '../util/storage/model';
 import {FileIndexActionTypes, RemoveFileActionType, ReplaceFileAction} from './fileIndexReducer';
 
 /**

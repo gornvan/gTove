@@ -21,11 +21,10 @@ import BreadCrumbs from '../presentation/breadCrumbs';
 import {
     AnyAppProperties,
     AnyProperties,
-    anyPropertiesTooLong,
     FileMetadata,
-    isMetadataOwnedByMe,
-    isTabletopFileMetadata
-} from '../util/fileUtils';
+} from '../util/storage/model';
+import { anyPropertiesTooLong, isMetadataOwnedByMe } from '../util/storage/utils';
+import { isTabletopFileMetadata } from '../util/storage/utils';
 import {FileAPIContextObject, TextureLoaderContextObject} from '../context/fileAPIContextBridge';
 import RenameFileEditor from '../presentation/renameFileEditor';
 import {PromiseModalContextObject} from '../context/promiseModalContextBridge';

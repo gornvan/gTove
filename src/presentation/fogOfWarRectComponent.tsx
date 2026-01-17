@@ -2,7 +2,7 @@ import {FunctionComponent, useMemo} from 'react';
 import * as THREE from 'three';
 import {Line} from '@react-three/drei';
 
-import {GridType} from '../util/fileUtils';
+import {GridType} from '../util/storage/model';
 import {getGridStride} from '../util/scenarioUtils';
 import {vector3ToArray} from '../util/threeUtils';
 

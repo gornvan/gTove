@@ -15,10 +15,10 @@ import * as constants from '../util/constants';
 import DriveTextureLoader from '../util/driveTextureLoader';
 import {
     FileMetadata,
-    isFileShortcut,
     RootDirAppProperties,
     TabletopObjectProperties
-} from '../util/fileUtils';
+} from '../util/storage/model';
+import { isFileShortcut } from '../util/storage/utils';
 import FileAPIContextBridge from '../context/fileAPIContextBridge';
 import InputButton from '../presentation/inputButton';
 import {setCreateInitialStructureAction} from '../redux/createInitialStructureReducer';
