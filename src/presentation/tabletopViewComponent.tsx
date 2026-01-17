@@ -87,18 +87,14 @@ import {
 } from '../util/scenarioUtils';
 import {SetCameraFunction} from './virtualGamingTabletop';
 import {
-    castMapProperties,
-    castTemplateProperties,
     FileMetadata,
     FileSystemUser,
     GridType,
-    isMiniMetadata,
-    isTemplateMetadata,
     PieceVisibilityEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/fileUtils';
-import {FileAPIContext} from '../util/fileUtils';
+} from '../util/storage/model';
+import {FileAPIContext} from '../util/storage/contract';
 import StayInsideContainer from '../container/stayInsideContainer';
 import {TextureLoaderContext} from '../util/driveTextureLoader';
 import * as constants from '../util/constants';
@@ -133,6 +129,7 @@ import {DisableGlobalKeyboardHandlerContext} from '../context/disableGlobalKeybo
 import CanvasContextBridge from '../context/CanvasContextBridge';
 import MetadataLoaderContainer from '../container/metadataLoaderContainer';
 import TextureService from '../service/textureService';
+import { castMapProperties, castTemplateProperties, isMiniMetadata, isTemplateMetadata } from '../util/storage/utils';
 
 interface TabletopViewComponentCustomMenuOption {
     render: (id: string) => React.ReactElement;

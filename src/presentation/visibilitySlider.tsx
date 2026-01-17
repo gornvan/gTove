@@ -4,7 +4,7 @@ import MultiToggle from 'react-multi-toggle';
 import './visibilitySlider.scss';
 
 import {MINI_VISIBILITY_OPTIONS} from '../util/scenarioUtils';
-import {PieceVisibilityEnum} from '../util/fileUtils';
+import {PieceVisibilityEnum} from '../util/storage/model';
 
 interface VisibilitySliderProps {
     visibility: PieceVisibilityEnum;

@@ -13,7 +13,8 @@ import {
     ObjectEuler,
     ObjectVector3
 } from '../util/scenarioUtils';
-import {castMapProperties, FileMetadata, GridType, MapProperties} from '../util/fileUtils';
+import { FileMetadata, GridType, MapProperties } from '../util/storage/model';
+import { castMapProperties } from '../util/storage/utils';
 import TabletopGridComponent from './tabletopGridComponent';
 import {PaintState} from './paintTools';
 import PaintSurface from './paintSurface';

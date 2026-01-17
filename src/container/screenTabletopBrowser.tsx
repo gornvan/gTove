@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
 
 import BrowseFilesComponent from './browseFilesComponent';
-import {FileMetadata, TabletopFileAppProperties} from '../util/fileUtils';
+import {FileMetadata, TabletopFileAppProperties} from '../util/storage/model';
 import {FOLDER_TABLETOP} from '../util/constants';
 import {setTabletopIdAction} from '../redux/locationReducer';
 import {DropDownMenuClickParams} from '../presentation/dropDownMenu';

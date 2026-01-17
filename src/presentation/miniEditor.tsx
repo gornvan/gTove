@@ -6,15 +6,15 @@ import ReactDropdown from 'react-dropdown-now';
 
 import './miniEditor.scss';
 
-import {isSupportedVideoMimeType} from '../util/fileUtils';
 import RenameFileEditor from './renameFileEditor';
 import DriveTextureLoader from '../util/driveTextureLoader';
 import {
     FileMetadata,
     MiniProperties,
     PieceVisibilityEnum
-} from '../util/fileUtils';
-import {isSizedEvent} from '../util/types';
+} from '../util/storage/model';
+import { isSizedEvent } from '../util/types';
+import { isSupportedVideoMimeType } from '../util/storage/utils';
 import GestureControls from '../container/gestureControls';
 import TabletopPreviewComponent from './tabletopPreviewComponent';
 import {MINI_CORNER_RADIUS_PERCENT} from './tabletopMiniComponent';

@@ -1,5 +1,5 @@
 import {ScenarioType} from './scenarioUtils';
-import {FileAPI} from './fileUtils';
+import {FileAPI} from './storage/contract';
 
 export enum BundleTypeEnum {
     DRIVE = 'drive'

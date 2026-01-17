@@ -12,7 +12,7 @@ import {GToveThunk, ScenarioAction} from '../util/types';
 import {getTabletopFromStore} from './mainReducer';
 import {ScenarioReducerActionTypes} from './scenarioReducer';
 import {TabletopValidationActionTypes} from './tabletopValidationReducer';
-import { GridType } from '../util/fileUtils';
+import { GridType } from '../util/storage/model';
 
 // =========================== Action types and generators
 

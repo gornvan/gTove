@@ -1,9 +1,9 @@
 import {PropsWithChildren, ReactElement, useCallback, useContext} from 'react';
 import {useSelector, useStore} from 'react-redux';
 
-import {AnyAppProperties, AnyProperties, FileMetadata, isWebLinkProperties} from '../util/fileUtils';
+import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/model';
+import { isWebLinkProperties, splitFileName } from '../util/storage/utils';
 import * as constants from '../util/constants';
-import {splitFileName} from '../util/fileUtils';
 import {updateFileAction} from '../redux/fileIndexReducer';
 import {makeSelectableChildHOC} from '../presentation/rubberBandGroup';
 import FileThumbnail from '../presentation/fileThumbnail';

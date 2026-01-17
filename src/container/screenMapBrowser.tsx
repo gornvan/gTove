@@ -2,7 +2,7 @@ import {FunctionComponent, useContext, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
 
-import {FileMetadata, MapProperties} from '../util/fileUtils';
+import {FileMetadata, MapProperties} from '../util/storage/model';
 import BrowseFilesComponent, {BrowseFilesComponentFileAction,
     BrowseFilesComponentFileOnClickOptionalResult} from './browseFilesComponent';
 import {FOLDER_MAP} from '../util/constants';

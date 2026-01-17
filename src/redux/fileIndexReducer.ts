@@ -2,7 +2,7 @@ import {Action, combineReducers} from 'redux';
 import {omit, without} from 'lodash';
 
 import {buildTutorialMetadata} from '../tutorial/tutorialUtils';
-import { AnyAppProperties, AnyProperties, FileMetadata } from '../util/fileUtils';
+import { AnyAppProperties, AnyProperties, FileMetadata } from '../util/storage/model';
 
 // =========================== Action types and generators
 

@@ -13,19 +13,15 @@ import {buildEuler, buildVector3, isColourDark, reverseEuler} from './threeUtils
 import {isCloseTo} from './mathsUtils';
 import {PaintToolEnum} from '../presentation/paintTools';
 import { AnyProperties,
-    castMapProperties,
-    castMiniProperties,
-    castTemplateProperties,
     defaultMapProperties,
     defaultMiniProperties,
     FileMetadata,
     GridType,
-    isTemplateMetadata,
-    isTemplateProperties,
     MapProperties,
     MiniProperties,
     PieceVisibilityEnum,
-    TemplateProperties } from './fileUtils';
+    TemplateProperties } from './storage/model';
+import { castMapProperties, castMiniProperties, castTemplateProperties, isTemplateMetadata, isTemplateProperties } from './storage/utils';
 
 export interface WithMetadataType<T extends AnyProperties> {
     metadata: FileMetadata<void, T>;

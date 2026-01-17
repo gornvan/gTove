@@ -4,7 +4,9 @@ import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithCredential, s
 
 import * as constants from './constants';
 import {fetchWithProgress, FetchWithProgressResponse} from './fetchWithProgress';
-import {corsUrl, FileAPI, OnProgressParams, FileMetadata, FileSystemUser, AnyProperties, FileShortcut, isFileShortcut} from './fileUtils';
+import { OnProgressParams, FileMetadata, FileSystemUser, AnyProperties, FileShortcut } from './storage/model';
+import { FileAPI } from './storage/contract';
+import { corsUrl, isFileShortcut } from './storage/utils';
 import {
     DriveUser,
     driveUserToFileSystemUser,
@@ -504,7 +506,7 @@ const googleAPI: FileAPI = {
             fileSystemMetadata = await googleAPI.getFullMetadata(fileSystemMetadata.id!);
         }
         const ownedByMe = fileSystemMetadata.owners
-            && fileSystemMetadata.owners.reduce((me, owner) => (!!me || !!owner.me), false);
+            && fileSystemMetadata.owners.reduce((me: boolean, owner: FileSystemUser) => (!!me || !!owner.me), false);
         if (ownedByMe) {
             await gapi.client.drive.files.update({
                 fileId: fileSystemMetadata.id,
@@ -515,7 +517,7 @@ const googleAPI: FileAPI = {
             const metadataParents = fileSystemMetadata.parents;
             const shortcut = metadataParents ? shortcutFiles.find((shortcut) => (
                 shortcut.parents.length === metadataParents.length
-                && shortcut.parents.reduce<boolean>((match, parentId) => (match && metadataParents.indexOf(parentId) >= 0), true)
+                && shortcut.parents.reduce<boolean>((match: boolean, parentId: string) => (match && metadataParents.indexOf(parentId) >= 0), true)
             )) : null;
             if (shortcut) {
                 await googleAPI.deleteFile(shortcut);
