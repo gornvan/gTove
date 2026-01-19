@@ -4,9 +4,9 @@ import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithCredential, s
 
 import * as constants from '../../../constants';
 import {fetchWithProgress, FetchWithProgressResponse} from '../../../fetchWithProgress';
-import { OnProgressParams, FileMetadata, FileSystemUser, AnyProperties, FileShortcut } from '../../model';
-import { FileAPI } from '../../contract';
-import { corsUrl, isFileShortcut } from '../../utils';
+import { OnProgressParams, FileMetadata, FileSystemUser, AnyProperties, FileShortcut } from '../../storageContract';
+import { FileAPI } from '../../storageContract';
+import { corsUrl, isFileShortcut } from '../../storageUtils';
 import {
     DriveUser,
     driveUserToFileSystemUser,

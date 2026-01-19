@@ -2,7 +2,7 @@ import {AnyAction} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 import {updateFileAction} from '../../redux/fileIndexReducer';
 import {ReduxStoreType} from '../../redux/mainReducer';
-import {FOLDER_TEMPLATE, MIME_TYPE_DRIVE_FOLDER} from '../../util/constants';
+import {FOLDER_TEMPLATE, MIME_TYPE_DRIVE_FOLDER} from '../constants';
 import {
     defaultMiniProperties,
     defaultMapProperties,
@@ -18,8 +18,8 @@ import {
     GridType,
     AnyAppProperties,
     AnyProperties
-} from './model';
-import { FileAPI } from './contract';
+} from './storageContract';
+import { FileAPI } from './storageContract';
 
 // CORS proxy for web link maps and minis
 export const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import {splitFileName} from '../util/storage/utils';
+import {splitFileName} from '../util/storage/storageUtils';
 import InputField from './inputField';
 import MetadataEditorComponent, {MetadataEditorComponentProps} from '../container/metadataEditorComponent';
-import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/model';
+import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/storageContract';
 
 export interface RenameFileEditorProps<T extends AnyAppProperties, U extends AnyProperties> extends MetadataEditorComponentProps<T, U> {
 }

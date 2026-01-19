@@ -1,4 +1,4 @@
-import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/model';
+import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/storageContract';
 
 import tutorialScenario from './tutorialScenario.json';
 import tutorialMetadata from './tutorialMetadata.json';

@@ -17,8 +17,8 @@ import {
     FileMetadata,
     RootDirAppProperties,
     TabletopObjectProperties
-} from '../util/storage/model';
-import { isFileShortcut } from '../util/storage/utils';
+} from '../util/storage/storageContract';
+import { isFileShortcut } from '../util/storage/storageUtils';
 import FileAPIContextBridge from '../context/fileAPIContextBridge';
 import InputButton from '../presentation/inputButton';
 import {setCreateInitialStructureAction} from '../redux/createInitialStructureReducer';

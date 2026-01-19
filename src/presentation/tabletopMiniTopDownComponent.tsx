@@ -1,7 +1,7 @@
 import {FunctionComponent, useMemo} from 'react';
 import * as THREE from 'three';
 
-import {FileMetadata, MiniProperties} from '../util/storage/model'; 
+import {FileMetadata, MiniProperties} from '../util/storage/storageContract'; 
 import {
     ObjectEuler,
     ObjectVector3,

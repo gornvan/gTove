@@ -8,7 +8,7 @@ import {
     IconShapeEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/storage/model';
+} from '../util/storage/storageContract';
 import {
     DistanceMode,
     DistanceRound,
@@ -26,7 +26,7 @@ import HighlightShaderMaterial from '../shaders/highlightShaderMaterial';
 import RosterColumnValuesLabel from './rosterColumnValuesLabel';
 import TabletopPathComponent, {TabletopPathPoint} from './tabletopPathComponent';
 import LabelSprite from './labelSprite';
-import { castTemplateProperties } from '../util/storage/utils';
+import { castTemplateProperties } from '../util/storage/storageUtils';
 
 interface TabletopTemplateComponentProps {
     miniId: string;

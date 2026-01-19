@@ -6,15 +6,15 @@ import './browseFilesSelected.scss';
 
 import FileThumbnail from './fileThumbnail';
 import {removeFileAction, updateFileAction} from '../redux/fileIndexReducer';
-import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/model';
-import { isTabletopFileMetadata } from '../util/storage/utils';
+import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/storageContract';
+import { isTabletopFileMetadata } from '../util/storage/storageUtils';
 import {getAllFilesFromStore, getUploadPlaceholdersFromStore} from '../redux/mainReducer';
 import * as constants from '../util/constants';
 import {FileAPIContextObject} from '../context/fileAPIContextBridge';
 import BrowseFilesFileThumbnail from '../container/browseFilesFileThumbnail';
 import {BrowseFilesCallback, BrowseFilesComponentFileAction} from '../container/browseFilesComponent';
 import {DropDownMenuOption} from './dropDownMenu';
-import {sortMetadataIdsByName} from '../util/storage/utils';
+import {sortMetadataIdsByName} from '../util/storage/storageUtils';
 import {MIME_TYPE_DRIVE_FOLDER} from '../util/constants';
 import {PromiseModalContextObject} from '../context/promiseModalContextBridge';
 

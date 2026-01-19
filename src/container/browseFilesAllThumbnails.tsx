@@ -4,12 +4,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import FileThumbnail from '../presentation/fileThumbnail';
 import {updateFolderStackAction} from '../redux/folderStacksReducer';
 import BrowseFilesFileThumbnail from './browseFilesFileThumbnail';
-import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/model';
+import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/storageContract';
 import Spinner from '../presentation/spinner';
 import {getAllFilesFromStore, getFolderStacksFromStore} from '../redux/mainReducer';
 import {BrowseFilesCallback} from './browseFilesComponent';
 import {DropDownMenuOption} from '../presentation/dropDownMenu';
-import {sortMetadataIdsByName} from '../util/storage/utils';
+import {sortMetadataIdsByName} from '../util/storage/storageUtils';
 
 interface BrowseFilesAllThumbnailsProps<A extends AnyAppProperties, B extends AnyProperties> {
     currentFolder: string;

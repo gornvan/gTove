@@ -7,7 +7,7 @@ import * as PropTypes from 'prop-types';
 import {default as RenameFileEditor, RenameFileEditorProps} from './renameFileEditor';
 import {jsonToScenarioAndTabletop, scenarioToJson, ScenarioType} from '../util/scenarioUtils';
 import {getAllFilesFromStore, getScenarioFromStore, ReduxStoreType} from '../redux/mainReducer';
-import {FileAPIContext} from '../util/storage/contract';
+import {FileAPIContext} from '../util/storage/storageContract';
 import InputButton from './inputButton';
 import TabletopPreviewComponent from './tabletopPreviewComponent';
 import {FileIndexReducerType} from '../redux/fileIndexReducer';

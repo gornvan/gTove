@@ -1,4 +1,4 @@
-import { AnyAppProperties, AnyProperties, FileMetadata, FileSystemUser } from "../../model";
+import { AnyAppProperties, AnyProperties, FileMetadata, FileSystemUser } from "../../storageContract";
 
 export interface DriveFileOwner {
     kind: 'drive#user';

@@ -14,8 +14,8 @@ import './pdfFileEditor.scss';
 
 import {GtoveDispatchProp, ReduxStoreType} from '../redux/mainReducer';
 import RenameFileEditor from './renameFileEditor';
-import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/model';
-import {FileAPIContext} from '../util/storage/contract';
+import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/storageContract';
+import {FileAPIContext} from '../util/storage/storageContract';
 import InputButton from './inputButton';
 import InputField from './inputField';
 import {PromiseModalContext} from '../context/promiseModalContextBridge';

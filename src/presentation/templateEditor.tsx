@@ -6,7 +6,7 @@ import {AnyAction} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {connect} from 'react-redux';
 
-import {FileAPI} from '../util/storage/contract';
+import {FileAPI} from '../util/storage/storageContract';
 import RenameFileEditor from './renameFileEditor';
 import {
     defaultMiniProperties,
@@ -14,8 +14,8 @@ import {
     IconShapeEnum,
     PieceVisibilityEnum,
     TemplateProperties,
-    TemplateShape } from '../util/storage/model';
-import { castTemplateProperties } from '../util/storage/utils';
+    TemplateShape } from '../util/storage/storageContract';
+import { castTemplateProperties } from '../util/storage/storageUtils';
 import { getColourHexString } from '../util/scenarioUtils';
 import TabletopPreviewComponent from './tabletopPreviewComponent';
 import { MiniType, ScenarioType, TabletopType } from '../util/scenarioUtils';

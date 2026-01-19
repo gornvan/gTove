@@ -3,7 +3,7 @@ import {toast} from 'react-toastify';
 
 import BrowseFilesComponent from './browseFilesComponent';
 import {FOLDER_BUNDLE} from '../util/constants';
-import {FileMetadata} from '../util/storage/model';
+import {FileMetadata} from '../util/storage/storageContract';
 import BundleFileEditor from '../presentation/bundleFileEditor';
 import {FileAPIContextObject} from '../context/fileAPIContextBridge';
 import {copyURLToClipboard} from '../util/scenarioUtils';

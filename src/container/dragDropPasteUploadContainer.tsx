@@ -13,7 +13,7 @@ import {useStore} from 'react-redux';
 
 import {uploadMultipleFiles, UploadType} from '../util/uploadUtils';
 import {FileAPIContextObject} from '../context/fileAPIContextBridge';
-import {FileMetadata} from '../util/storage/model';
+import {FileMetadata} from '../util/storage/storageContract';
 
 type DragDropPasteUploadContainerProps = PropsWithChildren<{
     topDirectory: string;

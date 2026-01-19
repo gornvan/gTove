@@ -5,7 +5,7 @@ import {clamp} from 'lodash';
 import classNames from 'classnames';
 
 import GestureControls from '../container/gestureControls';
-import {GridType, MapProperties} from '../util/storage/model';
+import {GridType, MapProperties} from '../util/storage/storageContract';
 import { isSizedEvent } from '../util/types';
 import { INV_SQRT3, SQRT3 } from '../util/constants';
 import { ceilAwayFromZero } from '../util/mathsUtils';

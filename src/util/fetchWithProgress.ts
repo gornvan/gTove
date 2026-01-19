@@ -1,4 +1,4 @@
-import {OnProgressParams} from './storage/model';
+import {OnProgressParams} from './storage/storageContract';
 
 interface FetchWithProgressOptions {
     method?: string;

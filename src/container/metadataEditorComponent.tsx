@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/model';
-import { isFileShortcut } from '../util/storage/utils';
-import { updateFileMetadataAndDispatch } from '../util/storage/utils';
+import {AnyAppProperties, AnyProperties, FileMetadata} from '../util/storage/storageContract';
+import { isFileShortcut } from '../util/storage/storageUtils';
+import { updateFileMetadataAndDispatch } from '../util/storage/storageUtils';
 import ConfigPanelWrapper from './configPanelWrapper';
 import {GtoveDispatchProp} from '../redux/mainReducer';
-import { FileAPIContext } from '../util/storage/contract';
+import { FileAPIContext } from '../util/storage/storageContract';
 
 export interface MetadataEditorComponentProps<T extends AnyAppProperties, U extends AnyProperties> {
     metadata: FileMetadata<T, U>;

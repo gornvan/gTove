@@ -22,9 +22,9 @@ import {
     AnyAppProperties,
     AnyProperties,
     FileMetadata,
-} from '../util/storage/model';
-import { anyPropertiesTooLong, isMetadataOwnedByMe } from '../util/storage/utils';
-import { isTabletopFileMetadata } from '../util/storage/utils';
+} from '../util/storage/storageContract';
+import { anyPropertiesTooLong, isMetadataOwnedByMe } from '../util/storage/storageUtils';
+import { isTabletopFileMetadata } from '../util/storage/storageUtils';
 import {FileAPIContextObject, TextureLoaderContextObject} from '../context/fileAPIContextBridge';
 import RenameFileEditor from '../presentation/renameFileEditor';
 import {PromiseModalContextObject} from '../context/promiseModalContextBridge';

@@ -3,7 +3,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {AnyAction, Store} from 'redux';
 import {toast} from 'react-toastify';
 
-import {AnyProperties, defaultMapProperties, defaultMiniProperties, FileMetadata} from './storage/model';
+import {AnyProperties, defaultMapProperties, defaultMiniProperties, FileMetadata} from './storage/storageContract';
 import * as constants from './constants';
 import {addFilesAction, removeFileAction, replaceFileAction} from '../redux/fileIndexReducer';
 import {
@@ -20,8 +20,8 @@ import {
     setUploadProgressAction,
     UploadPlaceholderType
 } from '../redux/uploadPlaceholderReducer';
-import {FileAPI} from './storage/contract';
-import { OnProgressParams } from './storage/model';
+import {FileAPI} from './storage/storageContract';
+import { OnProgressParams } from './storage/storageContract';
 import {FOLDER_MAP, FOLDER_MINI} from './constants';
 
 export type UploadType = {

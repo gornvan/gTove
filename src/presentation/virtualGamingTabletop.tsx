@@ -75,10 +75,10 @@ import {
     setUserAllowedAction,
     updateConnectedUserDeviceAction
 } from '../redux/connectedUserReducer';
-import { FileMetadata, FileSystemUser, GridType, MapProperties, MiniProperties, PieceVisibilityEnum, TabletopFileAppProperties} from '../util/storage/model';
-import { FileAPI, FileAPIContext } from '../util/storage/contract';
+import { FileMetadata, FileSystemUser, GridType, MapProperties, MiniProperties, PieceVisibilityEnum, TabletopFileAppProperties} from '../util/storage/storageContract';
+import { FileAPI, FileAPIContext } from '../util/storage/storageContract';
 import { buildVector3, vector3ToObject } from '../util/threeUtils';
-import { castMiniProperties, splitFileName } from '../util/storage/utils';
+import { castMiniProperties, splitFileName } from '../util/storage/storageUtils';
 import {PromiseModalContext} from '../context/promiseModalContextBridge';
 import {
     setLastSavedHeadActionIdAction,

@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import BrowseFilesComponent from './browseFilesComponent';
 import {FOLDER_SCENARIO} from '../util/constants';
 import {adjustScenarioOrigin, isScenarioEmpty, jsonToScenarioAndTabletop, scenarioToJson} from '../util/scenarioUtils';
-import {FileMetadata, GridType} from '../util/storage/model';
+import {FileMetadata, GridType} from '../util/storage/storageContract';
 import {DropDownMenuClickParams} from '../presentation/dropDownMenu';
 import {appendScenarioAction, setScenarioAction} from '../redux/scenarioReducer';
 import ScenarioFileEditor from '../presentation/scenarioFileEditor';

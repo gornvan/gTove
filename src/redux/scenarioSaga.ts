@@ -5,7 +5,7 @@ import {FileIndexActionTypes, RemoveFileActionType, ReplaceFileAction, UpdateFil
 import {getScenarioFromStore} from './mainReducer';
 import {MapType, MiniType} from '../util/scenarioUtils';
 import {removeMapAction, removeMiniAction, updateMapMetadataAction, updateMiniMetadataAction} from './scenarioReducer';
-import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/model';
+import {FileMetadata, MapProperties, MiniProperties} from '../util/storage/storageContract';
 import {GToveThunk} from '../util/types';
 
 function findMatchingMetadata(state: {[key: string]: (MapType | MiniType)}, metadataId: string): string[] {

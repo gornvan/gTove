@@ -9,8 +9,8 @@ import {
     PieceVisibilityEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/storage/model';
-import { castTemplateProperties } from '../util/storage/utils';
+} from '../util/storage/storageContract';
+import { castTemplateProperties } from '../util/storage/storageUtils';
 import {FOLDER_TEMPLATE} from '../util/constants';
 import {
     getColourHexString,

@@ -3,9 +3,9 @@ import {without} from 'lodash';
 
 import * as constants from '../../../constants';
 import {DriveFileOwner } from '../google/googleDriveUtils';
-import { FileSystemUser, FileMetadata, WebLinkProperties } from '../../model';
-import { FileAPI } from '../../contract';
-import { corsUrl } from '../../utils';
+import { FileSystemUser, FileMetadata, WebLinkProperties } from '../../storageContract';
+import { FileAPI } from '../../storageContract';
+import { corsUrl } from '../../storageUtils';
 
 // Used instead of googleAPI when offline.
 

@@ -40,8 +40,8 @@ import {
     MiniProperties,
     PieceVisibilityEnum,
     TemplateProperties
-} from '../util/storage/model';
-import { castMapProperties, castMiniProperties } from '../util/storage/utils';
+} from '../util/storage/storageContract';
+import { castMapProperties, castMiniProperties } from '../util/storage/storageUtils';
 import {ConnectedUserActionTypes} from './connectedUserReducer';
 import {GToveThunk, isScenarioAction, ScenarioAction} from '../util/types';
 import {TabletopReducerActionTypes} from './tabletopReducer';

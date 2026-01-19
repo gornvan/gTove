@@ -22,8 +22,8 @@ import {
 } from '../util/scenarioUtils';
 import {updateTabletopAction} from '../redux/tabletopReducer';
 import {GRID_NONE} from '../util/constants';
-import { defaultMapProperties, FileMetadata, GridType, MapProperties } from '../util/storage/model';
-import { castMapProperties, isSupportedVideoMimeType } from '../util/storage/utils';
+import { defaultMapProperties, FileMetadata, GridType, MapProperties } from '../util/storage/storageContract';
+import { castMapProperties, isSupportedVideoMimeType } from '../util/storage/storageUtils';
 import InputField from './inputField';
 import EnumSelect from './enumSelect';
 

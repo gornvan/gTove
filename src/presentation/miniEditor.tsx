@@ -12,9 +12,9 @@ import {
     FileMetadata,
     MiniProperties,
     PieceVisibilityEnum
-} from '../util/storage/model';
+} from '../util/storage/storageContract';
 import { isSizedEvent } from '../util/types';
-import { isSupportedVideoMimeType } from '../util/storage/utils';
+import { isSupportedVideoMimeType } from '../util/storage/storageUtils';
 import GestureControls from '../container/gestureControls';
 import TabletopPreviewComponent from './tabletopPreviewComponent';
 import {MINI_CORNER_RADIUS_PERCENT} from './tabletopMiniComponent';

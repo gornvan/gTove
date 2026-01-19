@@ -20,8 +20,8 @@ import { AnyProperties,
     MapProperties,
     MiniProperties,
     PieceVisibilityEnum,
-    TemplateProperties } from './storage/model';
-import { castMapProperties, castMiniProperties, castTemplateProperties, isTemplateMetadata, isTemplateProperties } from './storage/utils';
+    TemplateProperties } from './storage/storageContract';
+import { castMapProperties, castMiniProperties, castTemplateProperties, isTemplateMetadata, isTemplateProperties } from './storage/storageUtils';
 
 export interface WithMetadataType<T extends AnyProperties> {
     metadata: FileMetadata<void, T>;

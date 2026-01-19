@@ -93,8 +93,8 @@ import {
     PieceVisibilityEnum,
     TemplateProperties,
     TemplateShape
-} from '../util/storage/model';
-import {FileAPIContext} from '../util/storage/contract';
+} from '../util/storage/storageContract';
+import {FileAPIContext} from '../util/storage/storageContract';
 import StayInsideContainer from '../container/stayInsideContainer';
 import {TextureLoaderContext} from '../util/storage/providers/google/driveTextureLoader';
 import * as constants from '../util/constants';
@@ -129,7 +129,7 @@ import {DisableGlobalKeyboardHandlerContext} from '../context/disableGlobalKeybo
 import CanvasContextBridge from '../context/CanvasContextBridge';
 import MetadataLoaderContainer from '../container/metadataLoaderContainer';
 import TextureService from '../service/textureService';
-import { castMapProperties, castTemplateProperties, isMiniMetadata, isTemplateMetadata } from '../util/storage/utils';
+import { castMapProperties, castTemplateProperties, isMiniMetadata, isTemplateMetadata } from '../util/storage/storageUtils';
 
 interface TabletopViewComponentCustomMenuOption {
     render: (id: string) => React.ReactElement;

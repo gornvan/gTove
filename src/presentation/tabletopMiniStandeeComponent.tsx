@@ -10,8 +10,8 @@ import {
 } from '../util/scenarioUtils';
 import UprightMiniShaderMaterial from '../shaders/uprightMiniShaderMaterial';
 import HighlightShaderMaterial from '../shaders/highlightShaderMaterial';
-import {FileMetadata, MiniProperties} from '../util/storage/model';
-import { defaultMiniProperties } from '../util/storage/model';
+import {FileMetadata, MiniProperties} from '../util/storage/storageContract';
+import { defaultMiniProperties } from '../util/storage/storageContract';
 import {
     MINI_THICKNESS,
     RENDER_ORDER_ADJUST,

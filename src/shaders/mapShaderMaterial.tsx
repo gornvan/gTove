@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import {useFrame} from '@react-three/fiber';
 
 import {isVideoTexture} from '../util/threeUtils';
-import {GridType} from '../util/storage/model';
+import {GridType} from '../util/storage/storageContract';
 import {getShaderFogOffsets} from '../util/scenarioUtils';
 
 const vertexShader: string = (`
